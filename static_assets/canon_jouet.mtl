@@ -1,0 +1,297 @@
+newmtl material_1
+d 1
+Ns 0.756757
+Ni 0
+Ka 0 0 0
+Kd 0.101961 0.109804 0.054902
+Ks 0.992157 0.992157 0.992157
+Km 0.012
+map_refl /Maps/DzRef2.jpg
+map_Bump /Maps/Underbody.jpg
+
+newmtl material_2
+d 1
+Ns 0.756757
+Ni 0
+Ka 0 0 0
+Kd 0.101961 0.109804 0.054902
+Ks 0.992157 0.992157 0.992157
+Km 0.012
+map_refl /Maps/DzRef2.jpg
+map_Bump /Maps/Underbody.jpg
+
+newmtl material_3
+d 1
+Ns 0.756757
+Ni 0
+Ka 0 0 0
+Kd 0.101961 0.109804 0.054902
+Ks 0.992157 0.992157 0.992157
+Km 0.012
+map_refl /Maps/DzRef2.jpg
+map_Bump /Maps/Underbody.jpg
+
+newmtl material_4
+d 1
+Ns 0.756757
+Ni 0
+Ka 0 0 0
+Kd 0.101961 0.109804 0.054902
+Ks 0.992157 0.992157 0.992157
+Km 0.012
+map_refl /Maps/DzRef2.jpg
+map_Bump /Maps/Underbody.jpg
+
+newmtl material_5
+d 1
+Ns 1
+Ni 0
+Ka 0 0 0
+Kd 0.384314 0.419608 0.466667
+Ks 0 0 0
+Km 0
+
+newmtl material_6
+d 1
+Ns 1
+Ni 0
+Ka 0 0 0
+Kd 0.384314 0.419608 0.466667
+Ks 0 0 0
+Km 0
+
+newmtl material_7
+d 1
+Ns 1
+Ni 0
+Ka 0 0 0
+Kd 0.384314 0.419608 0.466667
+Ks 0 0 0
+Km 0
+
+newmtl material_8
+d 1
+Ns 1
+Ni 0
+Ka 0 0 0
+Kd 0.384314 0.419608 0.466667
+Ks 0 0 0
+Km 0
+
+newmtl material_9
+d 1
+Ns 1
+Ni 0
+Ka 0 0 0
+Kd 1 1 1
+Ks 0 0 0
+Km 0
+map_Kd /Maps/Canon_jouet_mtl9_diffcol.jpg
+
+newmtl material_10
+d 1
+Ns 1
+Ni 0
+Ka 0 0 0
+Kd 1 1 1
+Ks 0 0 0
+Km 0
+map_Kd /Maps/Canon_jouet_mtl10_diffcol.jpg
+
+newmtl material_11
+d 1
+Ns 1
+Ni 0
+Ka 0 0 0
+Kd 1 1 1
+Ks 0 0 0
+Km 0
+map_Kd /Maps/Canon_jouet_mtl10_diffcol.jpg
+
+newmtl material_12
+d 1
+Ns 1
+Ni 0
+Ka 0 0 0
+Kd 1 1 1
+Ks 0 0 0
+Km 0
+map_Kd /Maps/Canon_jouet_mtl10_diffcol.jpg
+
+newmtl material_13
+d 1
+Ns 1
+Ni 0
+Ka 0 0 0
+Kd 1 1 1
+Ks 0 0 0
+Km 0
+map_Kd /Maps/Canon_jouet_mtl10_diffcol.jpg
+
+newmtl material_14
+d 1
+Ns 1
+Ni 0
+Ka 0 0 0
+Kd 0.356863 0.392157 0.439216
+Ks 0.74902 0.74902 0.74902
+Km 0
+
+newmtl material_15
+d 1
+Ns 1
+Ni 0
+Ka 0 0 0
+Kd 1 1 1
+Ks 0 0 0
+Km 0
+map_Kd /Maps/Canon_jouet_mtl9_diffcol.jpg
+
+newmtl material_16
+d 1
+Ns 0.75
+Ni 0
+Ka 0 0 0
+Kd 0.0901961 0.0901961 0.101961
+Ks 0.658824 0.819608 1
+Km 0.0008
+map_refl /Maps/DzRef2.jpg
+
+newmtl material_17
+d 1
+Ns 1
+Ni 0
+Ka 0 0 0
+Kd 1 1 1
+Ks 0 0 0
+Km 0
+map_Kd /Maps/Canon_jouet_mtl17_diffcol.jpg
+
+newmtl material_18
+d 1
+Ns 1
+Ni 0
+Ka 0 0 0
+Kd 1 1 1
+Ks 0 0 0
+Km 0
+map_Kd /Maps/Canon_jouet_mtl17_diffcol.jpg
+
+newmtl material_19
+d 1
+Ns 1
+Ni 0
+Ka 0 0 0
+Kd 1 1 1
+Ks 0 0 0
+Km 0
+map_Kd /Maps/Canon_jouet_mtl17_diffcol.jpg
+
+newmtl material_20
+d 1
+Ns 1
+Ni 0
+Ka 0 0 0
+Kd 1 1 1
+Ks 0 0 0
+Km 0
+map_Kd /Maps/Canon_jouet_mtl17_diffcol.jpg
+
+newmtl material_21
+d 1
+Ns 1
+Ni 0
+Ka 0 0 0
+Kd 1 1 1
+Ks 0 0 0
+Km 0
+map_Kd /Maps/Canon_jouet_mtl17_diffcol.jpg
+
+newmtl material_22
+d 1
+Ns 1
+Ni 0
+Ka 0 0 0
+Kd 1 1 1
+Ks 0 0 0
+Km 0
+map_Kd /Maps/Canon_jouet_mtl17_diffcol.jpg
+
+newmtl material_23
+d 1
+Ns 1
+Ni 0
+Ka 0 0 0
+Kd 0.356863 0.392157 0.439216
+Ks 0.74902 0.74902 0.74902
+Km 0
+
+newmtl material_24
+d 1
+Ns 1
+Ni 0
+Ka 0 0 0
+Kd 1 1 1
+Ks 0 0 0
+Km 0
+map_Kd /Maps/Canon_jouet_mtl17_diffcol.jpg
+
+newmtl material_25
+d 1
+Ns 1
+Ni 0
+Ka 0 0 0
+Kd 1 1 1
+Ks 0 0 0
+Km 0
+map_Kd /Maps/Canon_jouet_mtl17_diffcol.jpg
+
+newmtl material_26
+d 1
+Ns 1
+Ni 0
+Ka 0 0 0
+Kd 1 1 1
+Ks 0 0 0
+Km 0
+map_Kd /Maps/Canon_jouet_mtl17_diffcol.jpg
+
+newmtl material_27
+d 1
+Ns 1
+Ni 0
+Ka 0 0 0
+Kd 1 1 1
+Ks 0 0 0
+Km 0
+map_Kd /Maps/Canon_jouet_mtl17_diffcol.jpg
+
+newmtl material_28
+d 1
+Ns 1
+Ni 0
+Ka 0 0 0
+Kd 1 1 1
+Ks 0 0 0
+Km 0
+map_Kd /Maps/Canon_jouet_mtl17_diffcol.jpg
+
+newmtl material_29
+d 1
+Ns 1
+Ni 0
+Ka 0 0 0
+Kd 1 1 1
+Ks 0 0 0
+Km 0
+map_Kd /Maps/Canon_jouet_mtl17_diffcol.jpg
+
+newmtl material_30
+d 1
+Ns 1
+Ni 0
+Ka 0 0 0
+Kd 0.356863 0.392157 0.439216
+Ks 0.74902 0.74902 0.74902
+Km 0
+
