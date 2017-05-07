@@ -2,31 +2,52 @@ import React from 'react'
 import {
   AppRegistry,
   asset,
-  StyleSheet,
   Pano,
-  Text,
+  Model,
   View,
 } from 'react-vr'
 
 export default class CannonVR extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      angle: 0
+    }
+  }
+
   render () {
     return (
-      <View>
-        <Pano source={asset('chess-world.jpg')}/>
-        <Text
+      <View style={{}}>
+        <Pano source={asset('simple_surface.jpg')}/>
+        <Model
+          source={{
+            obj: asset('canon_jouet.obj'),
+            mtl: asset('canon_jouet.mtl')
+          }}
           style={{
-            backgroundColor: '#777879',
-            fontSize: 0.8,
-            fontWeight: '400',
-            layoutOrigin: [0.5, 0.5],
-            paddingLeft: 0.2,
-            paddingRight: 0.2,
-            textAlign: 'center',
-            textAlignVertical: 'center',
-            transform: [{translate: [0, 0, -3]}],
-          }}>
-          hello
-        </Text>
+            position: 'absolute',
+            transform: [
+              { translate: [0, -2, -1.5] },
+              { rotateX: this.state.angle },
+              { rotateY: -90 },
+              { scale: 0.13 }
+            ]
+          }}
+          onEnter={() => this.setState({angle: 20})}
+        />
+        <Model
+          source={{
+            obj: asset('Pirate Ship.obj'),
+            mtl: asset('Pirate Ship.mtl')
+          }}
+          style={{
+            position: 'absolute',
+            transform: [
+              { translate: [0, -2, -200] },
+              { scale: 0.01 }
+            ]
+          }}
+        />
       </View>
     )
   }
