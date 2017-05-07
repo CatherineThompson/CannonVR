@@ -1,0 +1,25 @@
+{
+  "parser": "babel-eslint",
+  "extends": ["eslint:recommended", "plugin:react/recommended", "standard"],
+  "env": {
+    "jest": true
+  },
+  "plugins": [
+    "react",
+    "immutable",
+    "react-native"
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "rules": {
+    "react/prop-types": 0,
+    "comma-dangle": 0,
+    "react-native/no-unused-styles": 2,
+  },
+  "globals": {
+    "fetch": true
+  }
+}

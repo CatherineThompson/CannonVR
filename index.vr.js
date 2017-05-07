@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   AppRegistry,
   asset,
@@ -6,10 +6,10 @@ import {
   Pano,
   Text,
   View,
-} from 'react-vr';
+} from 'react-vr'
 
 export default class CannonVR extends React.Component {
-  render() {
+  render () {
     return (
       <View>
         <Pano source={asset('chess-world.jpg')}/>
@@ -28,8 +28,8 @@ export default class CannonVR extends React.Component {
           hello
         </Text>
       </View>
-    );
+    )
   }
-};
+}
 
-AppRegistry.registerComponent('CannonVR', () => CannonVR);
+AppRegistry.registerComponent('CannonVR', () => CannonVR)
