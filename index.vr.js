@@ -8,7 +8,8 @@ import {
   Text,
   Sound,
   Sphere,
-  Scene
+  Scene,
+  Animated
 } from 'react-vr'
 
 export default class CannonVR extends React.Component {
@@ -16,12 +17,13 @@ export default class CannonVR extends React.Component {
     super(props)
     this.state = {
       boom: 'stop',
-      angle: 10,
+      pointOfView: 'firstPerson',
+      angle: 30,
       initialVelocity: 50,
       velocityX: 0,
       velocityY: 0,
       height: 0,
-      time: 0,
+      time: new Animated.Value(0.5),
       shipDistance: -100
     }
   }
@@ -39,6 +41,43 @@ export default class CannonVR extends React.Component {
       velocityX: this.state.initialVelocity * Math.cos(this.state.angle / 180 * Math.PI),
       velocityY: this.state.initialVelocity * Math.sin(this.state.angle / 180 * Math.PI)
     })
+  }
+
+  _handleFire = () => {
+    Animated.timing(this.state.time, {
+      toValue: 5,
+      duration: 5000
+    }).start()
+  }
+
+  _handleFire2 = () => {
+    Animated.timing(this.state.time, {
+      toValue: 0.5,
+      duration: 5000
+    }).start()
+  }
+
+  showPointofView = () => {
+    if (this.state.pointOfView === 'firstPerson') {
+      return (
+        <Scene style={{
+          position: 'absolute',
+          transform: [
+            { translate: [0, 1.5, 3] },
+          ]
+        }} />
+      )
+    } else if (this.state.pointOfView === 'stepOut') {
+      return (
+        <Scene style={{
+          position: 'absolute',
+          transform: [
+            { translate: [70, 0, -50] },
+            { rotateY: 90 }
+          ]
+        }} />
+      )
+    }
   }
 
   render () {
@@ -63,11 +102,11 @@ export default class CannonVR extends React.Component {
 
     var sphereArcPath = []
 
-    for (let i = 0; i < 5; i = i + 0.25) {
+    for (let i = 0; -i * this.state.velocityX > this.state.shipDistance; i = i + 0.25) {
       const height = this._calculateHeight(i, this.state.velocityY)
       sphereArcPath.push(
         <Sphere
-          radius={1}
+          radius={0.5}
           widthSegments={20}
           heightSegments={12}
           style={{
@@ -81,15 +120,11 @@ export default class CannonVR extends React.Component {
       )
     }
 
+    var CannonBall = Animated.createAnimatedComponent(Sphere)
+
     return (
       <View style={{}}>
-        <Scene style={{
-          position: 'absolute',
-          transform: [
-            { translate: [70, 0, -50] },
-            { rotateY: 90 }
-          ]
-        }} />
+        { this.showPointofView() }
         { spherePath }
         { sphereArcPath }
         <Pano source={asset('simple_surface.jpg')}/>
@@ -110,16 +145,32 @@ export default class CannonVR extends React.Component {
           }}>
          { this.state.angle }°
         </Text>
-        <Sphere
-          radius={0.19}
+        <Animated.Text
+          style={{
+            backgroundColor: '#777879',
+            fontSize: 0.8,
+            fontWeight: '400',
+            paddingLeft: 0.2,
+            paddingRight: 0.2,
+            textAlign: 'center',
+            textAlignVertical: 'center',
+            position: 'absolute',
+            transform: [
+              { rotateY: -20 },
+              { translate: [0, 2, -10] },
+            ]
+          }}>
+         { this.state.time }
+       </Animated.Text>
+        <CannonBall
+          radius={this.state.time}
           widthSegments={20}
           heightSegments={12}
           style={{
             color: 'blue',
-            position: 'absolute',
             transform: [
               { rotateX: this.state.angle },
-              { translate: [0, 0.62, -3.5] },
+              { translate: [0, 2, -3.5] },
             ]
           }}
         />
@@ -137,8 +188,14 @@ export default class CannonVR extends React.Component {
               { scale: 0.13 }
             ]
           }}
-          onEnter={() => {}}
-          onExit={() => {}} >
+          onEnter={() => {
+            this.setState({ boom: 'start' })
+            this._handleFire()
+          }}
+          onExit={() => {
+            this.setState({ boom: 'stop' })
+            this._handleFire2()
+          }} >
           <Sound
             source={asset('Cannon.wav')}
             playStatus={this.state.boom}
