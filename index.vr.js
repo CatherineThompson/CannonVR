@@ -9,17 +9,17 @@ import {
   Sound,
   Sphere,
   Scene,
-  Animated
+  Animated,
+  VrButton
 } from 'react-vr'
 
 export default class CannonVR extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      boom: 'stop',
       pointOfView: 'firstPerson',
       angle: 30,
-      initialVelocity: 50,
+      initialVelocity: 40,
       velocityX: 0,
       velocityY: 0,
       height: 0,
@@ -29,30 +29,19 @@ export default class CannonVR extends React.Component {
   }
 
   componentWillMount () {
-    this._calculateVelocities()
-  }
-
-  _calculateHeight = (time, vy) => {
-    return -0.5 * 9.8 * time * time + vy * time
-  }
-
-  _calculateVelocities = (time, vy) => {
     this.setState({
       velocityX: this.state.initialVelocity * Math.cos(this.state.angle / 180 * Math.PI),
       velocityY: this.state.initialVelocity * Math.sin(this.state.angle / 180 * Math.PI)
     })
   }
 
+  _calculateHeight = (time, vy) => {
+    return -0.5 * 9.8 * time * time + vy * time
+  }
+
   _handleFire = () => {
     Animated.timing(this.state.time, {
       toValue: 5,
-      duration: 5000
-    }).start()
-  }
-
-  _handleFire2 = () => {
-    Animated.timing(this.state.time, {
-      toValue: 0.5,
       duration: 5000
     }).start()
   }
@@ -80,9 +69,8 @@ export default class CannonVR extends React.Component {
     }
   }
 
-  render () {
+  showPath = () => {
     var spherePath = []
-
     for (let i = 0; i < 20; i++) {
       spherePath.push(
         <Sphere
@@ -99,10 +87,12 @@ export default class CannonVR extends React.Component {
         />
       )
     }
+    return spherePath
+  }
 
+  showArc = () => {
     var sphereArcPath = []
-
-    for (let i = 0; -i * this.state.velocityX > this.state.shipDistance; i = i + 0.25) {
+    for (let i = 1; -i * this.state.velocityX > this.state.shipDistance; i = i + 0.25) {
       const height = this._calculateHeight(i, this.state.velocityY)
       sphereArcPath.push(
         <Sphere
@@ -119,18 +109,22 @@ export default class CannonVR extends React.Component {
         />
       )
     }
+    return sphereArcPath
+  }
 
-    var CannonBall = Animated.createAnimatedComponent(Sphere)
+  // { this.showPointofView() }
 
+  render () {
     return (
       <View style={{}}>
-        { this.showPointofView() }
-        { spherePath }
-        { sphereArcPath }
         <Pano source={asset('simple_surface.jpg')}/>
+
+        { this.showPath() }
+        { this.showArc() }
+
         <Text
           style={{
-            backgroundColor: '#777879',
+            backgroundColor: 'orange',
             fontSize: 0.8,
             fontWeight: '400',
             paddingLeft: 0.2,
@@ -142,38 +136,35 @@ export default class CannonVR extends React.Component {
               { rotateY: -20 },
               { translate: [0, 1, -10] },
             ]
-          }}>
+          }}
+          >
          { this.state.angle }°
         </Text>
-        <Animated.Text
-          style={{
-            backgroundColor: '#777879',
-            fontSize: 0.8,
-            fontWeight: '400',
-            paddingLeft: 0.2,
-            paddingRight: 0.2,
-            textAlign: 'center',
-            textAlignVertical: 'center',
-            position: 'absolute',
-            transform: [
-              { rotateY: -20 },
-              { translate: [0, 2, -10] },
-            ]
-          }}>
-         { this.state.time }
-       </Animated.Text>
-        <CannonBall
-          radius={this.state.time}
-          widthSegments={20}
-          heightSegments={12}
-          style={{
-            color: 'blue',
-            transform: [
-              { rotateX: this.state.angle },
-              { translate: [0, 2, -3.5] },
-            ]
+
+        <VrButton
+          onClickSound={{
+            wav: asset('Cannon.wav')
           }}
-        />
+          >
+          <Text
+            style={{
+              backgroundColor: 'red',
+              fontSize: 0.8,
+              fontWeight: '400',
+              paddingLeft: 0.2,
+              paddingRight: 0.2,
+              textAlign: 'center',
+              textAlignVertical: 'center',
+              position: 'absolute',
+              transform: [
+                { rotateY: -20 },
+                { translate: [0, 2, -10] },
+              ]
+            }} >
+           FIRE!
+          </Text>
+        </VrButton>
+
         <Model
           source={{
             obj: asset('canon_jouet.obj'),
@@ -188,19 +179,8 @@ export default class CannonVR extends React.Component {
               { scale: 0.13 }
             ]
           }}
-          onEnter={() => {
-            this.setState({ boom: 'start' })
-            this._handleFire()
-          }}
-          onExit={() => {
-            this.setState({ boom: 'stop' })
-            this._handleFire2()
-          }} >
-          <Sound
-            source={asset('Cannon.wav')}
-            playStatus={this.state.boom}
-          />
-        </Model>
+        />
+
         <Model
           source={{
             obj: asset('Pirate Ship.obj'),
@@ -214,9 +194,25 @@ export default class CannonVR extends React.Component {
             ]
           }}
         />
+
       </View>
     )
   }
 }
+
+{/* <CannonBall
+  radius={0.5}
+  widthSegments={20}
+  heightSegments={12}
+  style={{
+    color: 'blue',
+    transform: [
+      { rotateY: this.state.bounceValue },
+      { translate: [0, 2, -3.5] },
+    ]
+  }}
+/> */}
+// var CannonBall = Animated.createAnimatedComponent(Sphere)
+
 
 AppRegistry.registerComponent('CannonVR', () => CannonVR)
