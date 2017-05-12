@@ -16,29 +16,35 @@ export default class CannonVR extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      pointOfView: 'stepOut',
-      showOutline: false,
-      showBackground: false,
-      slowMo: true,
-      angle: 30,
-      initialVelocity: 40,
-      velocityX: 0,
-      velocityY: 0,
+      settingsVisual: {
+        pointOfView: 'stepOut', // 'firstPerson' or 'stepOut'
+        showOutline: false, // outline path the cannon ball will take
+        showBackground: false, // shows the pano image if true
+        slowMo: true, // shoots the cannon ball at half speed
+        distanceMarkers: 10 // distance the markers spread out in meters
+      },
+      settingsCannon: {
+        angle: 30, // in degrees, angle cannon will shoot from the ground
+        initialVelocity: 40, // in m/s/s
+        shipDistance: -150 // must be negative since forward is in the -Z direction
+      },
+      vx: 0,
+      vy: 0,
       height: 0,
-      distance: 0,
-      shipDistance: -100
+      distance: 0
     }
     this._animatedValue = new Animated.Value(0)
     this._animatedValue.addListener(({value}) => this.setState({
-      height: -0.5 * 9.8 * value * value + this.state.velocityY * value,
-      distance: -1 * value * this.state.velocityX
+      height: -0.5 * 9.8 * value * value + this.state.vy * value,
+      distance: -1 * value * this.state.vx
     }))
   }
 
   componentWillMount () {
+    const { angle, initialVelocity } = this.state.settingsCannon
     this.setState({
-      velocityX: this.state.initialVelocity * Math.cos(this.state.angle / 180 * Math.PI),
-      velocityY: this.state.initialVelocity * Math.sin(this.state.angle / 180 * Math.PI)
+      vx: initialVelocity * Math.cos(angle / 180 * Math.PI),
+      vy: initialVelocity * Math.sin(angle / 180 * Math.PI)
     })
   }
 
@@ -56,12 +62,15 @@ export default class CannonVR extends React.Component {
   _handleFire = () => {
     Animated.timing(this._animatedValue, {
       toValue: 5,
-      duration: this.state.slowMo ? 10000 : 5000
+      duration: this.state.settingsVisual.slowMo ? 10000 : 5000
     }).start()
   }
 
   showPointofView = () => {
-    if (this.state.pointOfView === 'firstPerson') {
+    const { pointOfView } = this.state.settingsVisual
+    const { shipDistance } = this.state.settingsCannon
+
+    if (pointOfView === 'firstPerson') {
       return (
         <Scene style={{
           position: 'absolute',
@@ -70,12 +79,12 @@ export default class CannonVR extends React.Component {
           ]
         }} />
       )
-    } else if (this.state.pointOfView === 'stepOut') {
+    } else if (pointOfView === 'stepOut') {
       return (
         <Scene style={{
           position: 'absolute',
           transform: [
-            { translate: [70, 0, -50] },
+            { translate: [70, 0, shipDistance / 2] },
             { rotateY: 90 }
           ]
         }} />
@@ -83,9 +92,13 @@ export default class CannonVR extends React.Component {
     }
   }
 
-  showPath = () => {
+  showDistanceMarkers = () => {
+    const { distanceMarkers } = this.state.settingsVisual
+    const { shipDistance } = this.state.settingsCannon
+    const positiveShipDistance = -1 * shipDistance
+
     var spherePath = []
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < positiveShipDistance; i = i + distanceMarkers) {
       spherePath.push(
         <Sphere
           radius={0.2}
@@ -95,7 +108,7 @@ export default class CannonVR extends React.Component {
             color: 'red',
             position: 'absolute',
             transform: [
-              { translate: [0, 0, -i * 5] },
+              { translate: [0, 0, -i] },
             ]
           }}
         />
@@ -105,9 +118,10 @@ export default class CannonVR extends React.Component {
   }
 
   showArc = () => {
+    const { shipDistance } = this.state.settingsCannon
     var sphereArcPath = []
-    for (let i = 0; -i * this.state.velocityX > this.state.shipDistance; i = i + 0.25) {
-      const height = this._calculateHeight(i, this.state.velocityY)
+    for (let i = 0; -i * this.state.vx > shipDistance; i = i + 0.25) {
+      const height = this._calculateHeight(i, this.state.vy)
       sphereArcPath.push(
         <Sphere
           radius={0.5}
@@ -117,7 +131,7 @@ export default class CannonVR extends React.Component {
             color: 'green',
             position: 'absolute',
             transform: [
-              { translate: [0, height, -i * this.state.velocityX] },
+              { translate: [0, height, -i * this.state.vx] },
             ]
           }}
         />
@@ -127,13 +141,17 @@ export default class CannonVR extends React.Component {
   }
 
   render () {
+    const { settingsVisual, settingsCannon } = this.state
     return (
       <View style={{}}>
-        <Pano source={asset('simple_surface.jpg')}/>
+        { settingsVisual.showBackground
+          ? <Pano source={asset('simple_surface.jpg')}/>
+          : null
+        }
 
         { this.showPointofView() }
-        { this.showPath() }
-        { this.state.showOutline ? this.showArc() : null }
+        { this.showDistanceMarkers() }
+        { settingsVisual.showOutline ? this.showArc() : null }
 
         <Text
           style={{
@@ -151,7 +169,7 @@ export default class CannonVR extends React.Component {
             ]
           }}
           >
-         { this.state.angle }°
+         { settingsCannon.angle }°
         </Text>
 
        <Animated.View style={{
@@ -206,7 +224,7 @@ export default class CannonVR extends React.Component {
             position: 'absolute',
             transform: [
               { translate: [0, -1, 0] },
-              { rotateX: this.state.angle },
+              { rotateX: settingsCannon.angle },
               { rotateY: -90 },
               { scale: 0.13 }
             ]
@@ -221,7 +239,7 @@ export default class CannonVR extends React.Component {
           style={{
             position: 'absolute',
             transform: [
-              { translate: [0, 0, this.state.shipDistance] },
+              { translate: [0, 0, settingsCannon.shipDistance] },
               { scale: 0.003 }
             ]
           }}
