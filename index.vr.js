@@ -6,7 +6,6 @@ import {
   Model,
   View,
   Text,
-  Sound,
   Sphere,
   Scene,
   Animated,
@@ -23,7 +22,7 @@ export default class CannonVR extends React.Component {
       velocityX: 0,
       velocityY: 0,
       height: 0,
-      time: new Animated.Value(0.5),
+      time: new Animated.Value(-2),
       shipDistance: -100
     }
   }
@@ -41,7 +40,7 @@ export default class CannonVR extends React.Component {
 
   _handleFire = () => {
     Animated.timing(this.state.time, {
-      toValue: 5,
+      toValue: -100,
       duration: 5000
     }).start()
   }
@@ -141,10 +140,28 @@ export default class CannonVR extends React.Component {
          { this.state.angle }°
         </Text>
 
+       <Animated.View style={{
+         position: 'absolute',
+         opacity: 0.5,
+         borderColor: 'red',
+         borderWidth: 1,
+         transform: [
+           { translateZ: this.state.time },
+         ]
+       }}>
+         <Sphere
+           radius={0.2}
+           widthSegments={20}
+           heightSegments={12}
+           style={{color: 'blue'}}
+         />
+       </Animated.View>
+
         <VrButton
           onClickSound={{
             wav: asset('Cannon.wav')
           }}
+          onClick={this._handleFire}
           >
           <Text
             style={{
@@ -199,20 +216,5 @@ export default class CannonVR extends React.Component {
     )
   }
 }
-
-{/* <CannonBall
-  radius={0.5}
-  widthSegments={20}
-  heightSegments={12}
-  style={{
-    color: 'blue',
-    transform: [
-      { rotateY: this.state.bounceValue },
-      { translate: [0, 2, -3.5] },
-    ]
-  }}
-/> */}
-// var CannonBall = Animated.createAnimatedComponent(Sphere)
-
 
 AppRegistry.registerComponent('CannonVR', () => CannonVR)
