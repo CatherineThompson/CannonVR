@@ -22,9 +22,14 @@ export default class CannonVR extends React.Component {
       velocityX: 0,
       velocityY: 0,
       height: 0,
-      time: new Animated.Value(-2),
+      distance: 0,
       shipDistance: -100
     }
+    this._animatedValue = new Animated.Value(0)
+    this._animatedValue.addListener(({value}) => this.setState({
+      height: -0.5 * 9.8 * value * value + this.state.velocityY * value,
+      distance: -1 * value * this.state.velocityX
+    }))
   }
 
   componentWillMount () {
@@ -37,12 +42,31 @@ export default class CannonVR extends React.Component {
   _calculateHeight = (time, vy) => {
     return -0.5 * 9.8 * time * time + vy * time
   }
+  _calculateDistance = (time, vx) => {
+    return vx * time
+  }
 
   _handleFire = () => {
-    Animated.timing(this.state.time, {
-      toValue: -100,
-      duration: 5000
+    // Animated.timing(this.state.time, {
+    //   toValue: -100,
+    //   duration: 5000
+    // }).start()
+
+    Animated.timing(this._animatedValue, {
+      toValue: 5,
+      duration: 10000
     }).start()
+
+    // Animated.parallel([
+    //   Animated.timing(this.state.time, {
+    //     toValue: -100,
+    //     duration: 5000
+    //   }),
+    //   Animated.timing(this.state.height, {
+    //     toValue: 10,
+    //     duration: 5000
+    //   })
+    // ]).start()
   }
 
   showPointofView = () => {
@@ -146,7 +170,8 @@ export default class CannonVR extends React.Component {
          borderColor: 'red',
          borderWidth: 1,
          transform: [
-           { translateZ: this.state.time },
+           { translateZ: this.state.distance },
+           { translateY: this.state.height }
          ]
        }}>
          <Sphere
