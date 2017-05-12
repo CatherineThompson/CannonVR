@@ -16,7 +16,10 @@ export default class CannonVR extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      pointOfView: 'firstPerson',
+      pointOfView: 'stepOut',
+      showOutline: false,
+      showBackground: false,
+      slowMo: true,
       angle: 30,
       initialVelocity: 40,
       velocityX: 0,
@@ -39,6 +42,10 @@ export default class CannonVR extends React.Component {
     })
   }
 
+  componentDidMount () {
+    this._handleFire()
+  }
+
   _calculateHeight = (time, vy) => {
     return -0.5 * 9.8 * time * time + vy * time
   }
@@ -47,26 +54,10 @@ export default class CannonVR extends React.Component {
   }
 
   _handleFire = () => {
-    // Animated.timing(this.state.time, {
-    //   toValue: -100,
-    //   duration: 5000
-    // }).start()
-
     Animated.timing(this._animatedValue, {
       toValue: 5,
-      duration: 10000
+      duration: this.state.slowMo ? 10000 : 5000
     }).start()
-
-    // Animated.parallel([
-    //   Animated.timing(this.state.time, {
-    //     toValue: -100,
-    //     duration: 5000
-    //   }),
-    //   Animated.timing(this.state.height, {
-    //     toValue: 10,
-    //     duration: 5000
-    //   })
-    // ]).start()
   }
 
   showPointofView = () => {
@@ -115,7 +106,7 @@ export default class CannonVR extends React.Component {
 
   showArc = () => {
     var sphereArcPath = []
-    for (let i = 1; -i * this.state.velocityX > this.state.shipDistance; i = i + 0.25) {
+    for (let i = 0; -i * this.state.velocityX > this.state.shipDistance; i = i + 0.25) {
       const height = this._calculateHeight(i, this.state.velocityY)
       sphereArcPath.push(
         <Sphere
@@ -135,15 +126,14 @@ export default class CannonVR extends React.Component {
     return sphereArcPath
   }
 
-  // { this.showPointofView() }
-
   render () {
     return (
       <View style={{}}>
         <Pano source={asset('simple_surface.jpg')}/>
 
+        { this.showPointofView() }
         { this.showPath() }
-        { this.showArc() }
+        { this.state.showOutline ? this.showArc() : null }
 
         <Text
           style={{
