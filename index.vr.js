@@ -3,7 +3,6 @@ import {
   AppRegistry,
   asset,
   Pano,
-  Model,
   View,
   Text,
   Sphere,
@@ -11,6 +10,8 @@ import {
   Animated,
   VrButton
 } from 'react-vr'
+import PirateShipModel from './vr/PirateShipModel'
+import CannonModel from './vr/CannonModel'
 
 export default class CannonVR extends React.Component {
   constructor (props) {
@@ -215,35 +216,8 @@ export default class CannonVR extends React.Component {
           </Text>
         </VrButton>
 
-        <Model
-          source={{
-            obj: asset('canon_jouet.obj'),
-            mtl: asset('canon_jouet.mtl')
-          }}
-          style={{
-            position: 'absolute',
-            transform: [
-              { translate: [0, -1, 0] },
-              { rotateX: settingsCannon.angle },
-              { rotateY: -90 },
-              { scale: 0.13 }
-            ]
-          }}
-        />
-
-        <Model
-          source={{
-            obj: asset('Pirate Ship.obj'),
-            mtl: asset('Pirate Ship.mtl')
-          }}
-          style={{
-            position: 'absolute',
-            transform: [
-              { translate: [0, 0, settingsCannon.shipDistance] },
-              { scale: 0.003 }
-            ]
-          }}
-        />
+      <CannonModel angle={settingsCannon.angle} />
+      <PirateShipModel shipDistance={settingsCannon.shipDistance} />
 
       </View>
     )
