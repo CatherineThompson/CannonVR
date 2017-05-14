@@ -11,6 +11,7 @@ import {
 import PirateShipModel from './vr/PirateShipModel'
 import CannonModel from './vr/CannonModel'
 import { showDistanceMarkers } from './vr/DistanceMarkers'
+import { showPathOutline } from './vr/PathOutline'
 
 export default class CannonVR extends React.Component {
   constructor (props) {
@@ -53,13 +54,6 @@ export default class CannonVR extends React.Component {
     this._handleFire()
   }
 
-  _calculateHeight = (time, vy) => {
-    return -0.5 * 9.8 * time * time + vy * time
-  }
-  _calculateDistance = (time, vx) => {
-    return vx * time
-  }
-
   _handleFire = () => {
     Animated.timing(this._animatedValue, {
       toValue: 5,
@@ -93,54 +87,6 @@ export default class CannonVR extends React.Component {
     }
   }
 
-  // showDistanceMarkers = () => {
-  //   const { distanceMarkers } = this.state.settingsVisual
-  //   const { shipDistance } = this.state.settingsCannon
-  //   const positiveShipDistance = -1 * shipDistance
-  //
-  //   var spherePath = []
-  //   for (let i = 0; i < positiveShipDistance; i = i + distanceMarkers) {
-  //     spherePath.push(
-  //       <Sphere
-  //         radius={0.3}
-  //         widthSegments={20}
-  //         heightSegments={12}
-  //         style={{
-  //           color: 'red',
-  //           position: 'absolute',
-  //           transform: [
-  //             { translate: [0, 0, -i] },
-  //           ]
-  //         }}
-  //       />
-  //     )
-  //   }
-  //   return spherePath
-  // }
-
-  showArc = () => {
-    const { shipDistance } = this.state.settingsCannon
-    var sphereArcPath = []
-    for (let i = 0; -i * this.state.vx > shipDistance; i = i + 0.25) {
-      const height = this._calculateHeight(i, this.state.vy)
-      sphereArcPath.push(
-        <Sphere
-          radius={0.5}
-          widthSegments={20}
-          heightSegments={12}
-          style={{
-            color: 'green',
-            position: 'absolute',
-            transform: [
-              { translate: [0, height, -i * this.state.vx] },
-            ]
-          }}
-        />
-      )
-    }
-    return sphereArcPath
-  }
-
   render () {
     const { settingsVisual, settingsCannon } = this.state
     return (
@@ -156,7 +102,14 @@ export default class CannonVR extends React.Component {
             settingsCannon.shipDistance
           )
         }
-        { settingsVisual.showOutline ? this.showArc() : null }
+        { settingsVisual.showOutline
+          ? showPathOutline(
+              settingsCannon.shipDistance,
+              this.state.vx,
+              this.state.vy
+          )
+          : null
+        }
 
         <Animated.View style={{
           position: 'absolute',
