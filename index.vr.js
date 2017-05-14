@@ -4,14 +4,13 @@ import {
   asset,
   Pano,
   View,
-  Text,
   Sphere,
   Scene,
-  Animated,
-  VrButton
+  Animated
 } from 'react-vr'
 import PirateShipModel from './vr/PirateShipModel'
 import CannonModel from './vr/CannonModel'
+import { showDistanceMarkers } from './vr/DistanceMarkers'
 
 export default class CannonVR extends React.Component {
   constructor (props) {
@@ -19,14 +18,14 @@ export default class CannonVR extends React.Component {
     this.state = {
       settingsVisual: {
         pointOfView: 'stepOut', // 'firstPerson' or 'stepOut'
-        showOutline: false, // outline path the cannon ball will take
+        showOutline: true, // outline path the cannon ball will take
         showBackground: false, // shows the pano image if true
-        slowMo: true, // shoots the cannon ball at half speed
+        slowMo: false, // shoots the cannon ball at half speed
         distanceMarkers: 10 // distance the markers spread out in meters
       },
       settingsCannon: {
-        angle: 30, // in degrees, angle cannon will shoot from the ground
-        initialVelocity: 40, // in m/s/s
+        angle: 50, // in degrees, angle cannon will shoot from the ground
+        initialVelocity: 60, // in m/s/s
         shipDistance: -150 // must be negative since forward is in the -Z direction
       },
       vx: 0,
@@ -34,6 +33,7 @@ export default class CannonVR extends React.Component {
       height: 0,
       distance: 0
     }
+
     this._animatedValue = new Animated.Value(0)
     this._animatedValue.addListener(({value}) => this.setState({
       height: -0.5 * 9.8 * value * value + this.state.vy * value,
@@ -93,30 +93,30 @@ export default class CannonVR extends React.Component {
     }
   }
 
-  showDistanceMarkers = () => {
-    const { distanceMarkers } = this.state.settingsVisual
-    const { shipDistance } = this.state.settingsCannon
-    const positiveShipDistance = -1 * shipDistance
-
-    var spherePath = []
-    for (let i = 0; i < positiveShipDistance; i = i + distanceMarkers) {
-      spherePath.push(
-        <Sphere
-          radius={0.2}
-          widthSegments={20}
-          heightSegments={12}
-          style={{
-            color: 'red',
-            position: 'absolute',
-            transform: [
-              { translate: [0, 0, -i] },
-            ]
-          }}
-        />
-      )
-    }
-    return spherePath
-  }
+  // showDistanceMarkers = () => {
+  //   const { distanceMarkers } = this.state.settingsVisual
+  //   const { shipDistance } = this.state.settingsCannon
+  //   const positiveShipDistance = -1 * shipDistance
+  //
+  //   var spherePath = []
+  //   for (let i = 0; i < positiveShipDistance; i = i + distanceMarkers) {
+  //     spherePath.push(
+  //       <Sphere
+  //         radius={0.3}
+  //         widthSegments={20}
+  //         heightSegments={12}
+  //         style={{
+  //           color: 'red',
+  //           position: 'absolute',
+  //           transform: [
+  //             { translate: [0, 0, -i] },
+  //           ]
+  //         }}
+  //       />
+  //     )
+  //   }
+  //   return spherePath
+  // }
 
   showArc = () => {
     const { shipDistance } = this.state.settingsCannon
@@ -144,80 +144,37 @@ export default class CannonVR extends React.Component {
   render () {
     const { settingsVisual, settingsCannon } = this.state
     return (
-      <View style={{}}>
+      <View>
         { settingsVisual.showBackground
           ? <Pano source={asset('simple_surface.jpg')}/>
           : null
         }
 
         { this.showPointofView() }
-        { this.showDistanceMarkers() }
+        { showDistanceMarkers(
+            settingsVisual.distanceMarkers,
+            settingsCannon.shipDistance
+          )
+        }
         { settingsVisual.showOutline ? this.showArc() : null }
 
-        <Text
-          style={{
-            backgroundColor: 'orange',
-            fontSize: 0.8,
-            fontWeight: '400',
-            paddingLeft: 0.2,
-            paddingRight: 0.2,
-            textAlign: 'center',
-            textAlignVertical: 'center',
-            position: 'absolute',
-            transform: [
-              { rotateY: -20 },
-              { translate: [0, 1, -10] },
-            ]
-          }}
-          >
-         { settingsCannon.angle }°
-        </Text>
+        <Animated.View style={{
+          position: 'absolute',
+          transform: [
+            { translateZ: this.state.distance },
+            { translateY: this.state.height }
+          ]
+        }}>
+        <Sphere
+          radius={0.3}
+          widthSegments={20}
+          heightSegments={12}
+          style={{color: '#D3D3D3'}}
+        />
+        </Animated.View>
 
-       <Animated.View style={{
-         position: 'absolute',
-         opacity: 0.5,
-         borderColor: 'red',
-         borderWidth: 1,
-         transform: [
-           { translateZ: this.state.distance },
-           { translateY: this.state.height }
-         ]
-       }}>
-         <Sphere
-           radius={0.2}
-           widthSegments={20}
-           heightSegments={12}
-           style={{color: 'blue'}}
-         />
-       </Animated.View>
-
-        <VrButton
-          onClickSound={{
-            wav: asset('Cannon.wav')
-          }}
-          onClick={this._handleFire}
-          >
-          <Text
-            style={{
-              backgroundColor: 'red',
-              fontSize: 0.8,
-              fontWeight: '400',
-              paddingLeft: 0.2,
-              paddingRight: 0.2,
-              textAlign: 'center',
-              textAlignVertical: 'center',
-              position: 'absolute',
-              transform: [
-                { rotateY: -20 },
-                { translate: [0, 2, -10] },
-              ]
-            }} >
-           FIRE!
-          </Text>
-        </VrButton>
-
-      <CannonModel angle={settingsCannon.angle} />
-      <PirateShipModel shipDistance={settingsCannon.shipDistance} />
+        <CannonModel angle={settingsCannon.angle} />
+        <PirateShipModel shipDistance={settingsCannon.shipDistance} />
 
       </View>
     )
