@@ -8,6 +8,7 @@ import {
   Scene,
   Animated
 } from 'react-vr'
+import { Easing } from 'react-native'
 import PirateShipModel from './vr/PirateShipModel'
 import CannonModel from './vr/CannonModel'
 import { showDistanceMarkers } from './vr/DistanceMarkers'
@@ -25,7 +26,7 @@ export default class CannonVR extends React.Component {
         distanceMarkers: 5 // distance the markers spread out in meters
       },
       settingsCannon: {
-        angle: 60, // in degrees, angle cannon will shoot from the ground
+        angle: 30, // in degrees, angle cannon will shoot from the ground
         initialVelocity: 60, // in m/s/s
         shipDistance: -120 // must be negative since forward is in the -Z direction
       },
@@ -59,7 +60,8 @@ export default class CannonVR extends React.Component {
     const { settingsVisual, settingsCannon, vx } = this.state
     Animated.timing(this._animatedValue, {
       toValue: -1 * settingsCannon.shipDistance / vx,
-      duration: settingsVisual.slowMo ? 10000 : 5000
+      easing: Easing.linear,
+      duration: settingsVisual.slowMo ? 10000 : 5000,
     }).start()
   }
 
