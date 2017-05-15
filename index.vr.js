@@ -27,7 +27,7 @@ export default class CannonVR extends React.Component {
     super(props)
     this.state = {
       settingsVisual: {
-        pointOfView: 'firstPerson', // 'firstPerson' or 'stepOut'
+        pointOfView: 'stepOut', // 'firstPerson' or 'stepOut'
         showOutline: true, // outline path the cannon ball will take
         showBackground: false, // shows the pano image if true
         slowMo: false, // shoots the cannon ball at half speed

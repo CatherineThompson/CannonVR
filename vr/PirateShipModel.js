@@ -29,8 +29,8 @@ export const Burst = ({shipDistance}) => (
     style={{
       position: 'absolute',
       transform: [
-        { translate: [0, 0, shipDistance] },
-        { scale: 3 }
+        { translate: [0, -5, shipDistance] },
+        { scale: 5 }
       ]
     }}
   />
