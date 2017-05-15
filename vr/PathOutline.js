@@ -5,7 +5,7 @@ import {
 
 export function showPathOutline (shipDistance, vx, vy) {
   var sphereArcPath = []
-  for (let i = 0; -i * vx > shipDistance; i = i + 0.25) {
+  for (let i = 0; -i * vx >= shipDistance; i = i + 0.25) {
     const height = calculateHeight(i, vy)
     sphereArcPath.push(
       <Sphere

@@ -22,17 +22,18 @@ export default class CannonVR extends React.Component {
         showOutline: true, // outline path the cannon ball will take
         showBackground: false, // shows the pano image if true
         slowMo: false, // shoots the cannon ball at half speed
-        distanceMarkers: 10 // distance the markers spread out in meters
+        distanceMarkers: 5 // distance the markers spread out in meters
       },
       settingsCannon: {
-        angle: 50, // in degrees, angle cannon will shoot from the ground
+        angle: 60, // in degrees, angle cannon will shoot from the ground
         initialVelocity: 60, // in m/s/s
-        shipDistance: -150 // must be negative since forward is in the -Z direction
+        shipDistance: -120 // must be negative since forward is in the -Z direction
       },
       vx: 0,
       vy: 0,
       height: 0,
-      distance: 0
+      distance: 0,
+      willHit: false
     }
 
     this._animatedValue = new Animated.Value(0)
@@ -55,9 +56,10 @@ export default class CannonVR extends React.Component {
   }
 
   _handleFire = () => {
+    const { settingsVisual, settingsCannon, vx } = this.state
     Animated.timing(this._animatedValue, {
-      toValue: 5,
-      duration: this.state.settingsVisual.slowMo ? 10000 : 5000
+      toValue: -1 * settingsCannon.shipDistance / vx,
+      duration: settingsVisual.slowMo ? 10000 : 5000
     }).start()
   }
 
