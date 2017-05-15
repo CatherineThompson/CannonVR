@@ -7,8 +7,8 @@ import {
 const CannonModel = ({angle}) => (
   <Model
     source={{
-      obj: asset('canon_jouet.obj'),
-      mtl: asset('canon_jouet.mtl')
+      obj: asset('Cannon/canon_jouet.obj'),
+      mtl: asset('Cannon/canon_jouet.mtl')
     }}
     style={{
       position: 'absolute',

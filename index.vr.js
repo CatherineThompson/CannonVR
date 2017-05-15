@@ -9,7 +9,7 @@ import {
   Animated
 } from 'react-vr'
 import { Easing } from 'react-native'
-import PirateShipModel from './vr/PirateShipModel'
+import PirateShipModel, { Burst } from './vr/PirateShipModel'
 import CannonModel from './vr/CannonModel'
 import { showDistanceMarkers } from './vr/DistanceMarkers'
 import { showPathOutline } from './vr/PathOutline'
@@ -148,6 +148,7 @@ export default class CannonVR extends React.Component {
 
         <CannonModel angle={settingsCannon.angle} />
         <PirateShipModel shipDistance={settingsCannon.shipDistance} />
+        <Burst shipDistance={settingsCannon.shipDistance} />
 
       </View>
     )
