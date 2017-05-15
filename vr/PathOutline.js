@@ -2,11 +2,11 @@ import React from 'react'
 import {
   Sphere
 } from 'react-vr'
+import { calculateHeight, calculateDistance } from './PhysicsHelpers'
 
 export function showPathOutline (shipDistance, vx, vy) {
   var sphereArcPath = []
-  for (let i = 0; -i * vx >= shipDistance; i = i + 0.25) {
-    const height = calculateHeight(i, vy)
+  for (let i = 0; calculateDistance(i, vx) >= shipDistance; i = i + 0.25) {
     sphereArcPath.push(
       <Sphere
         radius={0.3}
@@ -16,15 +16,11 @@ export function showPathOutline (shipDistance, vx, vy) {
           color: 'green',
           position: 'absolute',
           transform: [
-            { translate: [0, height, -i * vx] },
+            { translate: [0, calculateHeight(i, vy), calculateDistance(i, vx)] },
           ]
         }}
       />
     )
   }
   return sphereArcPath
-}
-
-function calculateHeight (time, vy) {
-  return -0.5 * 9.8 * time * time + vy * time
 }

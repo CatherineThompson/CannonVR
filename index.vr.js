@@ -18,7 +18,8 @@ import {
   calculateVy,
   calculateHeight,
   calculateDistance,
-  timeToShip
+  timeToShip,
+  isHit
 } from './vr/PhysicsHelpers'
 
 export default class CannonVR extends React.Component {
@@ -52,10 +53,13 @@ export default class CannonVR extends React.Component {
   }
 
   componentWillMount () {
-    const { angle, initialVelocity } = this.state.settingsCannon
+    const { angle, initialVelocity, shipDistance } = this.state.settingsCannon
+    const { vx, vy } = this.state
+
     this.setState({
       vx: calculateVx(initialVelocity, angle),
-      vy: calculateVy(initialVelocity, angle)
+      vy: calculateVy(initialVelocity, angle),
+      willHit: isHit(shipDistance, vx, vy)
     })
   }
 
@@ -68,7 +72,7 @@ export default class CannonVR extends React.Component {
     Animated.timing(this._animatedValue, {
       toValue: timeToShip(settingsCannon.shipDistance, vx),
       easing: Easing.linear,
-      duration: settingsVisual.slowMo ? 10000 : 5000,
+      duration: settingsVisual.slowMo ? 10000 : 5000
     }).start()
   }
 
@@ -99,7 +103,14 @@ export default class CannonVR extends React.Component {
   }
 
   render () {
-    const { settingsVisual, settingsCannon } = this.state
+    const {
+      settingsVisual,
+      settingsCannon,
+      height,
+      distance,
+      vx,
+      vy
+    } = this.state
     return (
       <View>
         { settingsVisual.showBackground
@@ -108,25 +119,23 @@ export default class CannonVR extends React.Component {
         }
 
         { this.showPointofView() }
+
         { showDistanceMarkers(
             settingsVisual.distanceMarkers,
             settingsCannon.shipDistance
           )
         }
+
         { settingsVisual.showOutline
-          ? showPathOutline(
-              settingsCannon.shipDistance,
-              this.state.vx,
-              this.state.vy
-          )
+          ? showPathOutline(settingsCannon.shipDistance, vx, vy)
           : null
         }
 
         <Animated.View style={{
           position: 'absolute',
           transform: [
-            { translateZ: this.state.distance },
-            { translateY: this.state.height }
+            { translateZ: distance },
+            { translateY: height }
           ]
         }}>
         <Sphere
