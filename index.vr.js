@@ -13,6 +13,13 @@ import PirateShipModel from './vr/PirateShipModel'
 import CannonModel from './vr/CannonModel'
 import { showDistanceMarkers } from './vr/DistanceMarkers'
 import { showPathOutline } from './vr/PathOutline'
+import {
+  calculateVx,
+  calculateVy,
+  calculateHeight,
+  calculateDistance,
+  timeToShip
+} from './vr/PhysicsHelpers'
 
 export default class CannonVR extends React.Component {
   constructor (props) {
@@ -39,16 +46,16 @@ export default class CannonVR extends React.Component {
 
     this._animatedValue = new Animated.Value(0)
     this._animatedValue.addListener(({value}) => this.setState({
-      height: -0.5 * 9.8 * value * value + this.state.vy * value,
-      distance: -1 * value * this.state.vx
+      height: calculateHeight(value, this.state.vy),
+      distance: calculateDistance(value, this.state.vx)
     }))
   }
 
   componentWillMount () {
     const { angle, initialVelocity } = this.state.settingsCannon
     this.setState({
-      vx: initialVelocity * Math.cos(angle / 180 * Math.PI),
-      vy: initialVelocity * Math.sin(angle / 180 * Math.PI)
+      vx: calculateVx(initialVelocity, angle),
+      vy: calculateVy(initialVelocity, angle)
     })
   }
 
@@ -59,7 +66,7 @@ export default class CannonVR extends React.Component {
   _handleFire = () => {
     const { settingsVisual, settingsCannon, vx } = this.state
     Animated.timing(this._animatedValue, {
-      toValue: -1 * settingsCannon.shipDistance / vx,
+      toValue: timeToShip(settingsCannon.shipDistance, vx),
       easing: Easing.linear,
       duration: settingsVisual.slowMo ? 10000 : 5000,
     }).start()
