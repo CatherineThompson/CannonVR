@@ -10,6 +10,7 @@ export function showDistanceMarkers (distanceBetween, shipDistance) {
   for (let i = 0; i < positiveShipDistance; i = i + distanceBetween) {
     spherePath.push(
       <Sphere
+        key={i}
         radius={0.3}
         widthSegments={20}
         heightSegments={12}

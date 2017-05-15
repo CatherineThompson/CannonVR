@@ -27,22 +27,22 @@ export default class CannonVR extends React.Component {
     super(props)
     this.state = {
       settingsVisual: {
-        pointOfView: 'stepOut', // 'firstPerson' or 'stepOut'
+        pointOfView: 'firstPerson', // 'firstPerson' or 'stepOut'
         showOutline: true, // outline path the cannon ball will take
         showBackground: false, // shows the pano image if true
         slowMo: false, // shoots the cannon ball at half speed
         distanceMarkers: 5 // distance the markers spread out in meters
       },
       settingsCannon: {
-        angle: 30, // in degrees, angle cannon will shoot from the ground
-        initialVelocity: 60, // in m/s/s
+        angle: 65, // in degrees, angle cannon will shoot from the ground
+        initialVelocity: 39, // in m/s/s
         shipDistance: -120 // must be negative since forward is in the -Z direction
       },
       vx: 0,
       vy: 0,
       height: 0,
       distance: 0,
-      willHit: false
+      showHit: false
     }
 
     this._animatedValue = new Animated.Value(0)
@@ -53,13 +53,11 @@ export default class CannonVR extends React.Component {
   }
 
   componentWillMount () {
-    const { angle, initialVelocity, shipDistance } = this.state.settingsCannon
-    const { vx, vy } = this.state
+    const { angle, initialVelocity } = this.state.settingsCannon
 
     this.setState({
       vx: calculateVx(initialVelocity, angle),
-      vy: calculateVy(initialVelocity, angle),
-      willHit: isHit(shipDistance, vx, vy)
+      vy: calculateVy(initialVelocity, angle)
     })
   }
 
@@ -73,7 +71,15 @@ export default class CannonVR extends React.Component {
       toValue: timeToShip(settingsCannon.shipDistance, vx),
       easing: Easing.linear,
       duration: settingsVisual.slowMo ? 10000 : 5000
-    }).start()
+    }).start(this._handleFireEnd)
+  }
+
+  _handleFireEnd = () => {
+    const { settingsCannon, vx, vy } = this.state
+
+    if (isHit(settingsCannon.shipDistance, vx, vy)) {
+      this.setState({showHit: true})
+    }
   }
 
   showPointofView = () => {
@@ -109,7 +115,8 @@ export default class CannonVR extends React.Component {
       height,
       distance,
       vx,
-      vy
+      vy,
+      showHit
     } = this.state
     return (
       <View>
@@ -148,7 +155,7 @@ export default class CannonVR extends React.Component {
 
         <CannonModel angle={settingsCannon.angle} />
         <PirateShipModel shipDistance={settingsCannon.shipDistance} />
-        <Burst shipDistance={settingsCannon.shipDistance} />
+        { showHit ? <Burst shipDistance={settingsCannon.shipDistance} /> : null }
 
       </View>
     )

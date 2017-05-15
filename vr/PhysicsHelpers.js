@@ -21,8 +21,8 @@ export const timeToShip = (shipDistance, vx) => {
 
 export const isHit = (shipDistance, vx, vy) => {
   const heightAtShip = calculateHeight(timeToShip(shipDistance, vx), vy)
-  if (heightAtShip > 0.1 || heightAtShip < -0.1) {
-    return false
+  if (heightAtShip > 0.3 || heightAtShip < -0.3) {
+    return true
   }
-  return true
+  return false
 }
