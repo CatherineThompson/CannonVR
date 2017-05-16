@@ -25,10 +25,12 @@ export default class SettingsScreen extends React.Component {
 
               <Text
                 style={styles.text}>
-                65 °
+                {this.props.state.settingsCannon.angle} °
               </Text>
 
-              <SelectionArrows />
+              <SelectionArrows
+                onPressUp={this.props.onPressAngleUp}
+                onPressDown={this.props.onPressAngleDown} />
             </View>
 
             <Text
