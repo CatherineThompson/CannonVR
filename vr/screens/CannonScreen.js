@@ -25,17 +25,6 @@ export default class CannonScreen extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      settingsVisual: {
-        pointOfView: 'stepOut', // 'firstPerson' or 'stepOut'
-        showOutline: true, // outline path the cannon ball will take
-        showBackground: false, // shows the pano image if true
-        slowMo: false, // shoots the cannon ball at half speed
-        distanceMarkers: 5 // distance the markers spread out in meters
-      },
-      settingsCannon: {
-        initialVelocity: 39, // in m/s/s
-        shipDistance: -120 // must be negative since forward is in the -Z direction
-      },
       vx: 0,
       vy: 0,
       height: 0,
@@ -51,8 +40,7 @@ export default class CannonScreen extends React.Component {
   }
 
   componentWillMount () {
-    const { initialVelocity } = this.state.settingsCannon
-    const { angle } = this.props.state.settingsCannon
+    const { angle, initialVelocity } = this.props.state.settingsCannon
     this.setState({
       vx: calculateVx(initialVelocity, angle),
       vy: calculateVy(initialVelocity, angle)
@@ -64,25 +52,29 @@ export default class CannonScreen extends React.Component {
   }
 
   _handleFire = () => {
-    const { settingsVisual, settingsCannon, vx } = this.state
+    const { vx } = this.state
+    const { shipDistance } = this.props.state.settingsCannon
+    const { slowMo } = this.props.state.settingsVisual
+
     Animated.timing(this._animatedValue, {
-      toValue: timeToShip(settingsCannon.shipDistance, vx),
+      toValue: timeToShip(shipDistance, vx),
       easing: Easing.linear,
-      duration: settingsVisual.slowMo ? 10000 : 5000
+      duration: slowMo ? 10000 : 5000
     }).start(this._handleFireEnd)
   }
 
   _handleFireEnd = () => {
-    const { settingsCannon, vx, vy } = this.state
+    const { vx, vy } = this.state
+    const { shipDistance } = this.props.state.settingsCannon
 
-    if (isHit(settingsCannon.shipDistance, vx, vy)) {
+    if (isHit(shipDistance, vx, vy)) {
       this.setState({showHit: true})
     }
   }
 
   showPointofView = () => {
-    const { pointOfView } = this.state.settingsVisual
-    const { shipDistance } = this.state.settingsCannon
+    const { pointOfView } = this.props.state.settingsVisual
+    const { shipDistance } = this.props.state.settingsCannon
 
     if (pointOfView === 'firstPerson') {
       return (
@@ -108,18 +100,22 @@ export default class CannonScreen extends React.Component {
 
   render () {
     const {
-      settingsVisual,
-      settingsCannon,
       height,
       distance,
       vx,
       vy,
       showHit
     } = this.state
-    const { angle } = this.props.state.settingsCannon
+    const { angle, shipDistance } = this.props.state.settingsCannon
+    const {
+      showOutline,
+      showBackground,
+      distanceMarkers
+    } = this.props.state.settingsVisual
+
     return (
       <View>
-        { settingsVisual.showBackground
+        { showBackground
           ? <Pano source={asset('Panos/simple_surface.jpg')}/>
           : null
         }
@@ -127,13 +123,13 @@ export default class CannonScreen extends React.Component {
         { this.showPointofView() }
 
         { showDistanceMarkers(
-            settingsVisual.distanceMarkers,
-            settingsCannon.shipDistance
+            distanceMarkers,
+            shipDistance
           )
         }
 
-        { settingsVisual.showOutline
-          ? showPathOutline(settingsCannon.shipDistance, vx, vy)
+        { showOutline
+          ? showPathOutline(shipDistance, vx, vy)
           : null
         }
 
@@ -153,8 +149,8 @@ export default class CannonScreen extends React.Component {
         </Animated.View>
 
         <CannonModel angle={angle} />
-        <PirateShipModel shipDistance={settingsCannon.shipDistance} />
-        { showHit ? <Burst shipDistance={settingsCannon.shipDistance} /> : null }
+        <PirateShipModel shipDistance={shipDistance} />
+        { showHit ? <Burst shipDistance={shipDistance} /> : null }
 
       </View>
     )

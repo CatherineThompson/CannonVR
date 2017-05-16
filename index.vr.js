@@ -1,17 +1,10 @@
 import React from 'react'
 import {
   AppRegistry,
-  Animated,
   View
 } from 'react-vr'
 import CannonScreen from './vr/screens/CannonScreen'
 import SettingsScreen from './vr/screens/SettingsScreen'
-import {
-  calculateVx,
-  calculateVy,
-  calculateHeight,
-  calculateDistance,
-} from './vr/utilities/PhysicsHelpers'
 
 export default class CannonVR extends React.Component {
   constructor (props) {
@@ -22,26 +15,15 @@ export default class CannonVR extends React.Component {
         showOutline: true, // outline path the cannon ball will take
         showBackground: false, // shows the pano image if true
         slowMo: false, // shoots the cannon ball at half speed
-        distanceMarkers: 5 // distance the markers spread out in meters
+        distanceMarkers: 10 // distance the markers spread out in meters
       },
       settingsCannon: {
         angle: 30, // in degrees, angle cannon will shoot from the ground
         initialVelocity: 39, // in m/s/s
-        shipDistance: -120 // must be negative since forward is in the -Z direction
+        shipDistance: -70 // must be negative since forward is in the -Z direction
       },
-      vx: 0,
-      vy: 0,
-      height: 0,
-      distance: 0,
-      showHit: false,
       currentScreen: 'settings' // 'settings' or 'cannon'
     }
-
-    this._animatedValue = new Animated.Value(0)
-    this._animatedValue.addListener(({value}) => this.setState({
-      height: calculateHeight(value, this.state.vy),
-      distance: calculateDistance(value, this.state.vx)
-    }))
   }
 
   _handleOnPressAngleUp = () => {
@@ -61,13 +43,7 @@ export default class CannonVR extends React.Component {
   }
 
   _handleFire = () => {
-    const { angle, initialVelocity } = this.state.settingsCannon
-
-    this.setState({
-      vx: calculateVx(initialVelocity, angle),
-      vy: calculateVy(initialVelocity, angle),
-      currentScreen: 'cannon'
-    })
+    this.setState({currentScreen: 'cannon'})
   }
 
   render () {
