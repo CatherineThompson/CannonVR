@@ -4,11 +4,17 @@ import {
   View,
   Text,
   Pano,
-  StyleSheet
+  StyleSheet,
+  VrButton,
+  VrSoundEffects
 } from 'react-vr'
 import SelectionArrows from '../components/SelectionArrows'
 
 export default class SettingsScreen extends React.Component {
+  componentWillMount () {
+    //VrSoundEffects.unload('wav')
+  }
+
   render () {
     return (
       <View>
@@ -17,6 +23,11 @@ export default class SettingsScreen extends React.Component {
         <View style={styles.containerSettings}>
           <View style={{flex: 1}}>
 
+            <Text
+              style={styles.text}>
+              SETTINGS
+            </Text>
+
             <View style={styles.containerAngle}>
               <Text
                 style={styles.text}>
@@ -24,7 +35,7 @@ export default class SettingsScreen extends React.Component {
               </Text>
 
               <Text
-                style={styles.text}>
+                style={styles.text} >
                 {this.props.state.settingsCannon.angle} °
               </Text>
 
@@ -33,12 +44,15 @@ export default class SettingsScreen extends React.Component {
                 onPressDown={this.props.onPressAngleDown} />
             </View>
 
-            <Text
-              style={styles.text}>
-              hello
-            </Text>
-
           </View>
+
+          <VrButton
+            onClick={this.props.onPressFire}>
+            <Text
+              style={styles.fireButton}>
+              Fire!
+            </Text>
+          </VrButton>
         </View>
 
       </View>
@@ -59,6 +73,14 @@ var styles = StyleSheet.create({
   },
   text: {
     backgroundColor: 'transparent',
+    fontSize: 0.2,
+    paddingLeft: 0.2,
+    paddingRight: 0.2,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+  },
+  fireButton: {
+    backgroundColor: 'red',
     fontSize: 0.2,
     paddingLeft: 0.2,
     paddingRight: 0.2,

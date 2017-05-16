@@ -1,7 +1,8 @@
 import React from 'react'
 import {
   AppRegistry,
-  Animated
+  Animated,
+  View
 } from 'react-vr'
 import CannonScreen from './vr/screens/CannonScreen'
 import SettingsScreen from './vr/screens/SettingsScreen'
@@ -22,7 +23,7 @@ export default class CannonVR extends React.Component {
         distanceMarkers: 5 // distance the markers spread out in meters
       },
       settingsCannon: {
-        angle: 65, // in degrees, angle cannon will shoot from the ground
+        angle: 30, // in degrees, angle cannon will shoot from the ground
         initialVelocity: 39, // in m/s/s
         shipDistance: -120 // must be negative since forward is in the -Z direction
       },
@@ -30,7 +31,8 @@ export default class CannonVR extends React.Component {
       vy: 0,
       height: 0,
       distance: 0,
-      showHit: false
+      showHit: false,
+      currentScreen: 'settings' // 'settings' or 'cannon'
     }
 
     this._animatedValue = new Animated.Value(0)
@@ -41,23 +43,39 @@ export default class CannonVR extends React.Component {
   }
 
   _handleOnPressAngleUp = () => {
-    const newAngle = this.state.settingsCannon.angle + 1
-    this.setState({settingsCannon: {angle: newAngle}})
+    const { angle } = this.state.settingsCannon
+    if (angle < 90) {
+      this.state.settingsCannon.angle ++
+      this.forceUpdate()
+    }
   }
 
   _handleOnPressAngleDown = () => {
-    const newAngle = this.state.settingsCannon.angle - 1
-    this.setState({settingsCannon: {angle: newAngle}})
+    const { angle } = this.state.settingsCannon
+    if (angle > 0) {
+      this.state.settingsCannon.angle--
+      this.forceUpdate()
+    }
+  }
+
+  _handleFire = () => {
+    this.setState({currentScreen: 'cannon'})
   }
 
   render () {
     return (
-      <SettingsScreen
-        state={this.state}
-        onPressAngleUp={this._handleOnPressAngleUp}
-        onPressAngleDown={this._handleOnPressAngleDown}
-
-       />
+      <View>
+        {
+          this.state.currentScreen === 'cannon'
+          ? <CannonScreen />
+          : <SettingsScreen
+              state={this.state}
+              onPressAngleUp={this._handleOnPressAngleUp}
+              onPressAngleDown={this._handleOnPressAngleDown}
+              onPressFire={this._handleFire}
+            />
+        }
+      </View>
     )
   }
 }
