@@ -8,10 +8,10 @@ import {
   Animated
 } from 'react-vr'
 import { Easing } from 'react-native'
-import PirateShipModel, { Burst } from '../PirateShipModel'
-import CannonModel from '../CannonModel'
-import { showDistanceMarkers } from '../DistanceMarkers'
-import { showPathOutline } from '../PathOutline'
+import PirateShipModel, { Burst } from '../components/PirateShipModel'
+import CannonModel from '../components/CannonModel'
+import { showDistanceMarkers } from '../components/DistanceMarkers'
+import { showPathOutline } from '../components/PathOutline'
 import {
   calculateVx,
   calculateVy,
@@ -19,7 +19,7 @@ import {
   calculateDistance,
   timeToShip,
   isHit
-} from '../PhysicsHelpers'
+} from '../utilities/PhysicsHelpers'
 
 export default class CannonScreen extends React.Component {
   constructor (props) {
@@ -120,7 +120,7 @@ export default class CannonScreen extends React.Component {
     return (
       <View>
         { settingsVisual.showBackground
-          ? <Pano source={asset('simple_surface.jpg')}/>
+          ? <Pano source={asset('Panos/simple_surface.jpg')}/>
           : null
         }
 

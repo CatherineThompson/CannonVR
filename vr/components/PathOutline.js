@@ -2,7 +2,7 @@ import React from 'react'
 import {
   Sphere
 } from 'react-vr'
-import { calculateHeight, calculateDistance } from './PhysicsHelpers'
+import { calculateHeight, calculateDistance } from '../utilities/PhysicsHelpers'
 
 export function showPathOutline (shipDistance, vx, vy) {
   var sphereArcPath = []

@@ -12,7 +12,7 @@ export default class SettingsScreen extends React.Component {
   render () {
     return (
       <View>
-        <Pano source={asset('simple_surface.jpg')}/>
+        <Pano source={asset('Panos/simple_surface.jpg')}/>
 
         <View style={styles.containerSettings}>
           <View style={{flex: 1}}>
