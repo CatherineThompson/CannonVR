@@ -5,16 +5,11 @@ import {
   Text,
   Pano,
   StyleSheet,
-  VrButton,
-  VrSoundEffects
+  VrButton
 } from 'react-vr'
 import SelectionArrows from '../components/SelectionArrows'
 
 export default class SettingsScreen extends React.Component {
-  componentWillMount () {
-    //VrSoundEffects.unload('wav')
-  }
-
   render () {
     return (
       <View>
@@ -28,20 +23,40 @@ export default class SettingsScreen extends React.Component {
               SETTINGS
             </Text>
 
-            <View style={styles.containerAngle}>
+            <View style={styles.containerItem}>
               <Text
                 style={styles.text}>
                 angle
               </Text>
 
+              <View style={{flexDirection: 'row'}}>
+                <Text
+                  style={styles.text} >
+                  {this.props.state.settingsCannon.angle} °
+                </Text>
+
+                <SelectionArrows
+                  onPressUp={this.props.onPressAngleUp}
+                  onPressDown={this.props.onPressAngleDown} />
+              </View>
+            </View>
+
+            <View style={styles.containerItem}>
               <Text
-                style={styles.text} >
-                {this.props.state.settingsCannon.angle} °
+                style={styles.text}>
+                initial velocity
               </Text>
 
-              <SelectionArrows
-                onPressUp={this.props.onPressAngleUp}
-                onPressDown={this.props.onPressAngleDown} />
+              <View style={{flexDirection: 'row'}}>
+                <Text
+                  style={styles.text} >
+                  {this.props.state.settingsCannon.initialVelocity} m/s
+                </Text>
+
+                <SelectionArrows
+                  onPressUp={this.props.onPressVelocityUp}
+                  onPressDown={this.props.onPressVelocityDown} />
+              </View>
             </View>
 
           </View>
@@ -67,9 +82,10 @@ var styles = StyleSheet.create({
       {translate: [0, 0, -3]}
     ]
   },
-  containerAngle: {
+  containerItem: {
     flex: 1,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
   text: {
     backgroundColor: 'transparent',

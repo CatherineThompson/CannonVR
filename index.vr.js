@@ -19,8 +19,8 @@ export default class CannonVR extends React.Component {
       },
       settingsCannon: {
         angle: 30, // in degrees, angle cannon will shoot from the ground
-        initialVelocity: 39, // in m/s/s
-        shipDistance: -70 // must be negative since forward is in the -Z direction
+        initialVelocity: 50, // in m/s/s
+        shipDistance: -150 // must be negative since forward is in the -Z direction
       },
       currentScreen: 'settings' // 'settings' or 'cannon'
     }
@@ -29,16 +29,56 @@ export default class CannonVR extends React.Component {
   _handleOnPressAngleUp = () => {
     const { angle } = this.state.settingsCannon
     if (angle < 90) {
-      this.state.settingsCannon.angle ++
-      this.forceUpdate()
+      const newAngle = angle + 1
+      this.setState({
+        ...this.state,
+        settingsCannon: {
+          ...this.state.settingsCannon,
+          angle: newAngle
+        }
+      })
     }
   }
 
   _handleOnPressAngleDown = () => {
     const { angle } = this.state.settingsCannon
     if (angle > 0) {
-      this.state.settingsCannon.angle--
-      this.forceUpdate()
+      const newAngle = angle - 1
+      this.setState({
+        ...this.state,
+        settingsCannon: {
+          ...this.state.settingsCannon,
+          angle: newAngle
+        }
+      })
+    }
+  }
+
+  _handleOnPressVelocityUp = () => {
+    const { initialVelocity } = this.state.settingsCannon
+    if (initialVelocity < 500) {
+      const newInititalVelocity = initialVelocity + 5
+      this.setState({
+        ...this.state,
+        settingsCannon: {
+          ...this.state.settingsCannon,
+          initialVelocity: newInititalVelocity
+        }
+      })
+    }
+  }
+
+  _handleOnPressVelocityDown = () => {
+    const { initialVelocity } = this.state.settingsCannon
+    if (initialVelocity > 5) {
+      const newInititalVelocity = initialVelocity - 5
+      this.setState({
+        ...this.state,
+        settingsCannon: {
+          ...this.state.settingsCannon,
+          initialVelocity: newInititalVelocity
+        }
+      })
     }
   }
 
@@ -58,6 +98,8 @@ export default class CannonVR extends React.Component {
               state={this.state}
               onPressAngleUp={this._handleOnPressAngleUp}
               onPressAngleDown={this._handleOnPressAngleDown}
+              onPressVelocityUp={this._handleOnPressVelocityUp}
+              onPressVelocityDown={this._handleOnPressVelocityDown}
               onPressFire={this._handleFire}
             />
         }

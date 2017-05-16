@@ -90,8 +90,9 @@ export default class CannonScreen extends React.Component {
         <Scene style={{
           position: 'absolute',
           transform: [
-            { translate: [70, 0, shipDistance / 2] },
-            { rotateY: 90 }
+            { translate: [90, 0, shipDistance / 2] },
+            { rotateZ: -15 },
+            { rotateY: 90 },
           ]
         }} />
       )
