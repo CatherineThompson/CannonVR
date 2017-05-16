@@ -7,6 +7,8 @@ import {
 import CannonScreen from './vr/screens/CannonScreen'
 import SettingsScreen from './vr/screens/SettingsScreen'
 import {
+  calculateVx,
+  calculateVy,
   calculateHeight,
   calculateDistance,
 } from './vr/utilities/PhysicsHelpers'
@@ -59,7 +61,13 @@ export default class CannonVR extends React.Component {
   }
 
   _handleFire = () => {
-    this.setState({currentScreen: 'cannon'})
+    const { angle, initialVelocity } = this.state.settingsCannon
+
+    this.setState({
+      vx: calculateVx(initialVelocity, angle),
+      vy: calculateVy(initialVelocity, angle),
+      currentScreen: 'cannon'
+    })
   }
 
   render () {
@@ -67,7 +75,9 @@ export default class CannonVR extends React.Component {
       <View>
         {
           this.state.currentScreen === 'cannon'
-          ? <CannonScreen />
+          ? <CannonScreen
+              state={this.state}
+            />
           : <SettingsScreen
               state={this.state}
               onPressAngleUp={this._handleOnPressAngleUp}

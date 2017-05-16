@@ -33,7 +33,6 @@ export default class CannonScreen extends React.Component {
         distanceMarkers: 5 // distance the markers spread out in meters
       },
       settingsCannon: {
-        angle: 65, // in degrees, angle cannon will shoot from the ground
         initialVelocity: 39, // in m/s/s
         shipDistance: -120 // must be negative since forward is in the -Z direction
       },
@@ -52,8 +51,8 @@ export default class CannonScreen extends React.Component {
   }
 
   componentWillMount () {
-    const { angle, initialVelocity } = this.state.settingsCannon
-
+    const { initialVelocity } = this.state.settingsCannon
+    const { angle } = this.props.state.settingsCannon
     this.setState({
       vx: calculateVx(initialVelocity, angle),
       vy: calculateVy(initialVelocity, angle)
@@ -117,6 +116,7 @@ export default class CannonScreen extends React.Component {
       vy,
       showHit
     } = this.state
+    const { angle } = this.props.state.settingsCannon
     return (
       <View>
         { settingsVisual.showBackground
@@ -152,7 +152,7 @@ export default class CannonScreen extends React.Component {
         />
         </Animated.View>
 
-        <CannonModel angle={settingsCannon.angle} />
+        <CannonModel angle={angle} />
         <PirateShipModel shipDistance={settingsCannon.shipDistance} />
         { showHit ? <Burst shipDistance={settingsCannon.shipDistance} /> : null }
 
