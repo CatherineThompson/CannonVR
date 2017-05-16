@@ -20,63 +20,55 @@ export default class CannonVR extends React.Component {
       settingsCannon: {
         angle: 30, // in degrees, angle cannon will shoot from the ground
         initialVelocity: 50, // in m/s/s
-        shipDistance: -150 // must be negative since forward is in the -Z direction
+        shipDistance: 150 // must be negative since forward is in the -Z direction
       },
       currentScreen: 'settings' // 'settings' or 'cannon'
     }
   }
 
-  _handleOnPressAngleUp = () => {
-    const { angle } = this.state.settingsCannon
-    if (angle < 90) {
-      const newAngle = angle + 1
-      this.setState({
-        ...this.state,
-        settingsCannon: {
-          ...this.state.settingsCannon,
-          angle: newAngle
-        }
-      })
+  ranges = {
+    angle: {
+      high: 90,
+      low: 0
+    },
+    initialVelocity: {
+      high: 500,
+      low: 5
+    },
+    shipDistance: {
+      high: 200,
+      low: 5
     }
   }
 
-  _handleOnPressAngleDown = () => {
-    const { angle } = this.state.settingsCannon
-    if (angle > 0) {
-      const newAngle = angle - 1
-      this.setState({
-        ...this.state,
-        settingsCannon: {
-          ...this.state.settingsCannon,
-          angle: newAngle
-        }
-      })
-    }
+  increments = {
+    angle: 1,
+    initialVelocity: 5,
+    shipDistance: 5
   }
 
-  _handleOnPressVelocityUp = () => {
-    const { initialVelocity } = this.state.settingsCannon
-    if (initialVelocity < 500) {
-      const newInititalVelocity = initialVelocity + 5
+  _handleOnPressValueChange = (setting, direction) => {
+    const stateItem = this.state.settingsCannon[setting]
+
+    if (stateItem >= this.ranges[setting].high ||
+      stateItem <= this.ranges[setting].low) { return }
+
+    if (direction === 'up') {
+      const newValue = stateItem + this.increments[setting]
       this.setState({
         ...this.state,
         settingsCannon: {
           ...this.state.settingsCannon,
-          initialVelocity: newInititalVelocity
+          [setting]: newValue
         }
       })
-    }
-  }
-
-  _handleOnPressVelocityDown = () => {
-    const { initialVelocity } = this.state.settingsCannon
-    if (initialVelocity > 5) {
-      const newInititalVelocity = initialVelocity - 5
+    } else {
+      const newValue = stateItem - this.increments[setting]
       this.setState({
         ...this.state,
         settingsCannon: {
           ...this.state.settingsCannon,
-          initialVelocity: newInititalVelocity
+          [setting]: newValue
         }
       })
     }
@@ -96,10 +88,7 @@ export default class CannonVR extends React.Component {
             />
           : <SettingsScreen
               state={this.state}
-              onPressAngleUp={this._handleOnPressAngleUp}
-              onPressAngleDown={this._handleOnPressAngleDown}
-              onPressVelocityUp={this._handleOnPressVelocityUp}
-              onPressVelocityDown={this._handleOnPressVelocityDown}
+              onPressValue={this._handleOnPressValueChange}
               onPressFire={this._handleFire}
             />
         }

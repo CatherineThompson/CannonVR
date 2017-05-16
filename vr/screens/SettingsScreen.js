@@ -7,7 +7,6 @@ import {
   StyleSheet,
   VrButton
 } from 'react-vr'
-import SelectionArrows from '../components/SelectionArrows'
 import SettingsItemWithArrows from '../components/SettingsItemWithArrows'
 
 export default class SettingsScreen extends React.Component {
@@ -28,15 +27,22 @@ export default class SettingsScreen extends React.Component {
               title='angle'
               value={this.props.state.settingsCannon.angle}
               units='°'
-              onPressUp={this.props.onPressAngleUp}
-              onPressDown={this.props.onPressAngleDown} />
+              onPressUp={() => this.props.onPressValue('angle', 'up')}
+              onPressDown={() => this.props.onPressValue('angle', 'down')} />
 
             <SettingsItemWithArrows
               title='initial velocity'
               value={this.props.state.settingsCannon.initialVelocity}
               units='m/s'
-              onPressUp={this.props.onPressVelocityUp}
-              onPressDown={this.props.onPressVelocityDown} />
+              onPressUp={() => this.props.onPressValue('initialVelocity', 'up')}
+              onPressDown={() => this.props.onPressValue('initialVelocity', 'down')} />
+
+            <SettingsItemWithArrows
+              title='ship distance'
+              value={this.props.state.settingsCannon.shipDistance}
+              units='m'
+              onPressUp={() => this.props.onPressValue('shipDistance', 'up')}
+              onPressDown={() => this.props.onPressValue('shipDistance', 'down')} />
 
           </View>
 
@@ -60,11 +66,6 @@ var styles = StyleSheet.create({
     transform: [
       {translate: [0, 0, -3]}
     ]
-  },
-  containerItem: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between'
   },
   text: {
     backgroundColor: 'transparent',

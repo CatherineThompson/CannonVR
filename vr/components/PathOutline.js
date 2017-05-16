@@ -6,7 +6,7 @@ import { calculateHeight, calculateDistance } from '../utilities/PhysicsHelpers'
 
 export function showPathOutline (shipDistance, vx, vy) {
   var sphereArcPath = []
-  for (let i = 0; calculateDistance(i, vx) >= shipDistance; i = i + 0.25) {
+  for (let i = 0; calculateDistance(i, vx) >= -1 * shipDistance; i = i + 0.25) {
     sphereArcPath.push(
       <Sphere
         key={i}

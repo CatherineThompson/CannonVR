@@ -90,7 +90,7 @@ export default class CannonScreen extends React.Component {
         <Scene style={{
           position: 'absolute',
           transform: [
-            { translate: [90, 0, shipDistance / 2] },
+            { translate: [90, 0, -1 * shipDistance / 2] },
             { rotateZ: -15 },
             { rotateY: 90 },
           ]
@@ -141,12 +141,12 @@ export default class CannonScreen extends React.Component {
             { translateY: height }
           ]
         }}>
-        <Sphere
-          radius={0.3}
-          widthSegments={20}
-          heightSegments={12}
-          style={{color: '#D3D3D3'}}
-        />
+          <Sphere
+            radius={0.3}
+            widthSegments={20}
+            heightSegments={12}
+            style={{color: '#D3D3D3'}}
+          />
         </Animated.View>
 
         <CannonModel angle={angle} />

@@ -16,7 +16,7 @@ export const calculateDistance = (time, vx) => {
 }
 
 export const timeToShip = (shipDistance, vx) => {
-  return -1 * shipDistance / vx
+  return shipDistance / vx
 }
 
 export const isHit = (shipDistance, vx, vy) => {

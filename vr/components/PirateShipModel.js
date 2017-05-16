@@ -13,12 +13,13 @@ const PirateShipModel = ({shipDistance}) => (
     style={{
       position: 'absolute',
       transform: [
-        { translate: [0, 0, shipDistance] },
+        { translate: [0, 0, -1 * shipDistance] },
         { scale: 0.003 }
       ]
     }}
   />
 )
+
 
 export const Burst = ({shipDistance}) => (
   <Model
@@ -29,7 +30,7 @@ export const Burst = ({shipDistance}) => (
     style={{
       position: 'absolute',
       transform: [
-        { translate: [0, -5, shipDistance] },
+        { translate: [0, -5, -1 * shipDistance] },
         { scale: 5 }
       ]
     }}

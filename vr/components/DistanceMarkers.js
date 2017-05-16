@@ -4,10 +4,8 @@ import {
 } from 'react-vr'
 
 export function showDistanceMarkers (distanceBetween, shipDistance) {
-  const positiveShipDistance = -1 * shipDistance
-
   var spherePath = []
-  for (let i = 0; i < positiveShipDistance; i = i + distanceBetween) {
+  for (let i = 0; i < shipDistance; i = i + distanceBetween) {
     spherePath.push(
       <Sphere
         key={i}
