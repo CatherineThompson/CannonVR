@@ -8,6 +8,7 @@ import {
   VrButton
 } from 'react-vr'
 import SelectionArrows from '../components/SelectionArrows'
+import SettingsItemWithArrows from '../components/SettingsItemWithArrows'
 
 export default class SettingsScreen extends React.Component {
   render () {
@@ -23,41 +24,19 @@ export default class SettingsScreen extends React.Component {
               SETTINGS
             </Text>
 
-            <View style={styles.containerItem}>
-              <Text
-                style={styles.text}>
-                angle
-              </Text>
+            <SettingsItemWithArrows
+              title='angle'
+              value={this.props.state.settingsCannon.angle}
+              units='°'
+              onPressUp={this.props.onPressAngleUp}
+              onPressDown={this.props.onPressAngleDown} />
 
-              <View style={{flexDirection: 'row'}}>
-                <Text
-                  style={styles.text} >
-                  {this.props.state.settingsCannon.angle} °
-                </Text>
-
-                <SelectionArrows
-                  onPressUp={this.props.onPressAngleUp}
-                  onPressDown={this.props.onPressAngleDown} />
-              </View>
-            </View>
-
-            <View style={styles.containerItem}>
-              <Text
-                style={styles.text}>
-                initial velocity
-              </Text>
-
-              <View style={{flexDirection: 'row'}}>
-                <Text
-                  style={styles.text} >
-                  {this.props.state.settingsCannon.initialVelocity} m/s
-                </Text>
-
-                <SelectionArrows
-                  onPressUp={this.props.onPressVelocityUp}
-                  onPressDown={this.props.onPressVelocityDown} />
-              </View>
-            </View>
+            <SettingsItemWithArrows
+              title='initial velocity'
+              value={this.props.state.settingsCannon.initialVelocity}
+              units='m/s'
+              onPressUp={this.props.onPressVelocityUp}
+              onPressDown={this.props.onPressVelocityDown} />
 
           </View>
 
