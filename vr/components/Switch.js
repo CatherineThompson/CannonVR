@@ -11,11 +11,8 @@ const Switch = ({onPressOn, onPressOff, value}) => (
   <View style={styles.container}>
 
     <VrButton
-      onClickSound={{
-        wav: asset('Sounds/Click.wav')
-      }}
-      onClick={onPressOn}
-      >
+      onClickSound={{ wav: asset('Sounds/Click.wav') }}
+      onClick={onPressOn} >
       <Text
         style={[styles.text, {backgroundColor: value ? 'blue' : 'transparent'}]}>
         ON
@@ -23,13 +20,35 @@ const Switch = ({onPressOn, onPressOff, value}) => (
     </VrButton>
 
     <VrButton
-      onClickSound={{
-        wav: asset('Sounds/Click.wav')
-      }}
-      onClick={onPressOff}>
+      onClickSound={{ wav: asset('Sounds/Click.wav') }}
+      onClick={onPressOff} >
       <Text
         style={[styles.text, {backgroundColor: !value ? 'blue' : 'transparent'}]}>
         OFF
+      </Text>
+    </VrButton>
+
+  </View>
+)
+
+export const SwitchItems = ({onPressStepOut, onPressFirstPerson, value}) => (
+  <View style={styles.containerSwitchItems}>
+
+    <VrButton
+      onClickSound={{ wav: asset('Sounds/Click.wav') }}
+      onClick={onPressStepOut} >
+      <Text
+        style={[styles.text, {backgroundColor: value === 'stepOut' ? 'blue' : 'transparent'}]}>
+        Step Out
+      </Text>
+    </VrButton>
+
+    <VrButton
+      onClickSound={{ wav: asset('Sounds/Click.wav') }}
+      onClick={onPressFirstPerson}>
+      <Text
+        style={[styles.text, {backgroundColor: value === 'firstPerson' ? 'blue' : 'transparent'}]}>
+        First Person
       </Text>
     </VrButton>
 
@@ -42,6 +61,11 @@ var styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between'
+  },
+  containerSwitchItems: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    margin: 0.12
   },
   text: {
     backgroundColor: 'transparent',

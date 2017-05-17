@@ -110,23 +110,23 @@ export default class CannonVR extends React.Component {
     if (setting === 'showOutline' ||
       setting === 'showBackground' ||
       setting === 'slowMo') {
-      if (direction === 'on') {
-        this.setState({
-          ...this.state,
-          settingsVisual: {
-            ...this.state.settingsVisual,
-            [setting]: true
-          }
-        })
-      } else {
-        this.setState({
-          ...this.state,
-          settingsVisual: {
-            ...this.state.settingsVisual,
-            [setting]: false
-          }
-        })
-      }
+      this.setState({
+        ...this.state,
+        settingsVisual: {
+          ...this.state.settingsVisual,
+          [setting]: direction === 'on'
+        }
+      })
+    }
+
+    if (setting === 'pointOfView') {
+      this.setState({
+        ...this.state,
+        settingsVisual: {
+          ...this.state.settingsVisual,
+          [setting]: direction
+        }
+      })
     }
   }
 

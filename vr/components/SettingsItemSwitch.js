@@ -27,7 +27,7 @@ var styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    margin: 0.03
+    margin: 0.1
   },
   text: {
     backgroundColor: 'transparent',

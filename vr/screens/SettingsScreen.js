@@ -9,6 +9,7 @@ import {
 } from 'react-vr'
 import SettingsItemWithArrows from '../components/SettingsItemWithArrows'
 import SettingsItemSwitch from '../components/SettingsItemSwitch'
+import { SwitchItems } from '../components/Switch'
 
 export default class SettingsScreen extends React.Component {
   constructor (props) {
@@ -23,7 +24,8 @@ export default class SettingsScreen extends React.Component {
     if (this.state.xCenter === 0) {
       this.setState({
         xCenter: -1 * event.nativeEvent.width / 2,
-        yCenter: event.nativeEvent.height / 2})
+        yCenter: event.nativeEvent.height / 2
+      })
     }
   }
 
@@ -38,59 +40,69 @@ export default class SettingsScreen extends React.Component {
           style={[styles.containerSettings, { transform: [
             {translate: [this.state.xCenter, this.state.yCenter, -5]}
           ]}]}>
-          <View style={{flex: 1}}>
 
+          <Text
+            style={[styles.text, {marginTop: 0.15}]}>
+            SETTINGS
+          </Text>
+
+          <SettingsItemWithArrows
+            title='angle'
+            value={this.props.state.settingsCannon.angle}
+            units='°'
+            onPressUp={() => this.props.onPressCannonSettings('angle', 'up')}
+            onPressDown={() => this.props.onPressCannonSettings('angle', 'down')} />
+
+          <SettingsItemWithArrows
+            title='initial velocity'
+            value={this.props.state.settingsCannon.initialVelocity}
+            units='m/s'
+            onPressUp={() => this.props.onPressCannonSettings('initialVelocity', 'up')}
+            onPressDown={() => this.props.onPressCannonSettings('initialVelocity', 'down')} />
+
+          <SettingsItemWithArrows
+            title='ship distance'
+            value={this.props.state.settingsCannon.shipDistance}
+            units='m'
+            onPressUp={() => this.props.onPressCannonSettings('shipDistance', 'up')}
+            onPressDown={() => this.props.onPressCannonSettings('shipDistance', 'down')} />
+
+          <SettingsItemWithArrows
+            title='marker distance'
+            value={this.props.state.settingsVisual.distanceMarkers}
+            units='m'
+            onPressUp={() => this.props.onPressVisualSettings('distanceMarkers', 'up')}
+            onPressDown={() => this.props.onPressVisualSettings('distanceMarkers', 'down')} />
+
+          <SettingsItemSwitch
+            title='show outline'
+            value={this.props.state.settingsVisual.showOutline}
+            onPressOn={() => this.props.onPressVisualSettings('showOutline', 'on')}
+            onPressOff={() => this.props.onPressVisualSettings('showOutline', 'off')} />
+
+          <SettingsItemSwitch
+            title='show background'
+            value={this.props.state.settingsVisual.showBackground}
+            onPressOn={() => this.props.onPressVisualSettings('showBackground', 'on')}
+            onPressOff={() => this.props.onPressVisualSettings('showBackground', 'off')} />
+
+          <SettingsItemSwitch
+            title='slow motion'
+            value={this.props.state.settingsVisual.slowMo}
+            onPressOn={() => this.props.onPressVisualSettings('slowMo', 'on')}
+            onPressOff={() => this.props.onPressVisualSettings('slowMo', 'off')} />
+
+          <View>
             <Text
-              style={styles.text}>
-              SETTINGS
+              style={[styles.text, {margin: 0.08}]}>
+              point of view
             </Text>
 
-            <SettingsItemWithArrows
-              title='angle'
-              value={this.props.state.settingsCannon.angle}
-              units='°'
-              onPressUp={() => this.props.onPressCannonSettings('angle', 'up')}
-              onPressDown={() => this.props.onPressCannonSettings('angle', 'down')} />
-
-            <SettingsItemWithArrows
-              title='initial velocity'
-              value={this.props.state.settingsCannon.initialVelocity}
-              units='m/s'
-              onPressUp={() => this.props.onPressCannonSettings('initialVelocity', 'up')}
-              onPressDown={() => this.props.onPressCannonSettings('initialVelocity', 'down')} />
-
-            <SettingsItemWithArrows
-              title='ship distance'
-              value={this.props.state.settingsCannon.shipDistance}
-              units='m'
-              onPressUp={() => this.props.onPressCannonSettings('shipDistance', 'up')}
-              onPressDown={() => this.props.onPressCannonSettings('shipDistance', 'down')} />
-
-            <SettingsItemWithArrows
-              title='marker distance'
-              value={this.props.state.settingsVisual.distanceMarkers}
-              units='m'
-              onPressUp={() => this.props.onPressVisualSettings('distanceMarkers', 'up')}
-              onPressDown={() => this.props.onPressVisualSettings('distanceMarkers', 'down')} />
-
-            <SettingsItemSwitch
-              title='show outline'
-              value={this.props.state.settingsVisual.showOutline}
-              onPressOn={() => this.props.onPressVisualSettings('showOutline', 'on')}
-              onPressOff={() => this.props.onPressVisualSettings('showOutline', 'off')} />
-
-            <SettingsItemSwitch
-              title='show background'
-              value={this.props.state.settingsVisual.showBackground}
-              onPressOn={() => this.props.onPressVisualSettings('showBackground', 'on')}
-              onPressOff={() => this.props.onPressVisualSettings('showBackground', 'off')} />
-
-            <SettingsItemSwitch
-              title='slow motion'
-              value={this.props.state.settingsVisual.slowMo}
-              onPressOn={() => this.props.onPressVisualSettings('slowMo', 'on')}
-              onPressOff={() => this.props.onPressVisualSettings('slowMo', 'off')} />
-
+            <SwitchItems
+              value={this.props.state.settingsVisual.pointOfView}
+              onPressStepOut={() => this.props.onPressVisualSettings('pointOfView', 'stepOut')}
+              onPressFirstPerson={() => this.props.onPressVisualSettings('pointOfView', 'firstPerson')}
+            />
           </View>
 
           <VrButton
@@ -126,5 +138,6 @@ var styles = StyleSheet.create({
     paddingRight: 0.2,
     textAlign: 'center',
     textAlignVertical: 'center',
+    height: 0.5
   }
 })

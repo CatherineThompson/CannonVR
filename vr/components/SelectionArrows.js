@@ -11,26 +11,15 @@ const SelectionArrows = ({onPressUp, onPressDown}) => (
   <View>
 
     <VrButton
-      onClickSound={{
-        wav: asset('Sounds/Click.wav')
-      }}
-      onClick={onPressUp}
-      >
-      <Text
-        style={styles.text}>
-        ^
-      </Text>
+      onClickSound={{ wav: asset('Sounds/Click.wav') }}
+      onClick={onPressUp}>
+      <Text style={styles.text}>^</Text>
     </VrButton>
 
     <VrButton
-      onClickSound={{
-        wav: asset('Sounds/Click.wav')
-      }}
+      onClickSound={{wav: asset('Sounds/Click.wav')}}
       onClick={onPressDown}>
-      <Text
-        style={styles.text}>
-        v
-      </Text>
+      <Text style={styles.text}>v</Text>
     </VrButton>
 
   </View>
