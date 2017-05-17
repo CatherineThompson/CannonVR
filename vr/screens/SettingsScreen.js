@@ -27,22 +27,29 @@ export default class SettingsScreen extends React.Component {
               title='angle'
               value={this.props.state.settingsCannon.angle}
               units='°'
-              onPressUp={() => this.props.onPressValue('angle', 'up')}
-              onPressDown={() => this.props.onPressValue('angle', 'down')} />
+              onPressUp={() => this.props.onPressCannonSettings('angle', 'up')}
+              onPressDown={() => this.props.onPressCannonSettings('angle', 'down')} />
 
             <SettingsItemWithArrows
               title='initial velocity'
               value={this.props.state.settingsCannon.initialVelocity}
               units='m/s'
-              onPressUp={() => this.props.onPressValue('initialVelocity', 'up')}
-              onPressDown={() => this.props.onPressValue('initialVelocity', 'down')} />
+              onPressUp={() => this.props.onPressCannonSettings('initialVelocity', 'up')}
+              onPressDown={() => this.props.onPressCannonSettings('initialVelocity', 'down')} />
 
             <SettingsItemWithArrows
               title='ship distance'
               value={this.props.state.settingsCannon.shipDistance}
               units='m'
-              onPressUp={() => this.props.onPressValue('shipDistance', 'up')}
-              onPressDown={() => this.props.onPressValue('shipDistance', 'down')} />
+              onPressUp={() => this.props.onPressCannonSettings('shipDistance', 'up')}
+              onPressDown={() => this.props.onPressCannonSettings('shipDistance', 'down')} />
+
+            <SettingsItemWithArrows
+              title='marker distance'
+              value={this.props.state.settingsVisual.distanceMarkers}
+              units='m'
+              onPressUp={() => this.props.onPressVisualSettings('distanceMarkers', 'up')}
+              onPressDown={() => this.props.onPressVisualSettings('distanceMarkers', 'down')} />
 
           </View>
 

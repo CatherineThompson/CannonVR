@@ -38,20 +38,25 @@ export default class CannonVR extends React.Component {
     shipDistance: {
       high: 200,
       low: 5
+    },
+    distanceMarkers: {
+      high: 20,
+      low: 5
     }
   }
 
   increments = {
     angle: 1,
     initialVelocity: 5,
-    shipDistance: 5
+    shipDistance: 5,
+    distanceMarkers: 5
   }
 
-  _handleOnPressValueChange = (setting, direction) => {
+  _handleOnPressCannonSettings = (setting, direction) => {
     const stateItem = this.state.settingsCannon[setting]
 
-    if (stateItem >= this.ranges[setting].high ||
-      stateItem <= this.ranges[setting].low) { return }
+    if ((stateItem >= this.ranges[setting].high && direction === 'up') ||
+      (stateItem <= this.ranges[setting].low && direction === 'down')) { return }
 
     if (direction === 'up') {
       const newValue = stateItem + this.increments[setting]
@@ -74,6 +79,35 @@ export default class CannonVR extends React.Component {
     }
   }
 
+  _handleOnPressVisualSettings = (setting, direction) => {
+    if (setting === 'distanceMarkers') {
+      const currentDistance = this.state.settingsVisual.distanceMarkers
+
+      if ((currentDistance >= this.ranges[setting].high && direction === 'up') ||
+        (currentDistance <= this.ranges[setting].low && direction === 'down')) { return }
+
+      if (direction === 'up') {
+        const newValue = currentDistance + this.increments[setting]
+        this.setState({
+          ...this.state,
+          settingsVisual: {
+            ...this.state.settingsVisual,
+            [setting]: newValue
+          }
+        })
+      } else {
+        const newValue = currentDistance - this.increments[setting]
+        this.setState({
+          ...this.state,
+          settingsVisual: {
+            ...this.state.settingsVisual,
+            [setting]: newValue
+          }
+        })
+      }
+    }
+  }
+
   _handleFire = () => {
     this.setState({currentScreen: 'cannon'})
   }
@@ -88,7 +122,8 @@ export default class CannonVR extends React.Component {
             />
           : <SettingsScreen
               state={this.state}
-              onPressValue={this._handleOnPressValueChange}
+              onPressCannonSettings={this._handleOnPressCannonSettings}
+              onPressVisualSettings={this._handleOnPressVisualSettings}
               onPressFire={this._handleFire}
             />
         }
