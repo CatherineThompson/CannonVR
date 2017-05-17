@@ -7,18 +7,18 @@ import {
   VrButton
 } from 'react-vr'
 
-const SelectionArrows = ({onPressUp, onPressDown}) => (
-  <View>
+const Switch = ({onPressOn, onPressOff, value}) => (
+  <View style={styles.container}>
 
     <VrButton
       onClickSound={{
         wav: asset('Sounds/Click.wav')
       }}
-      onClick={onPressUp}
+      onClick={onPressOn}
       >
       <Text
-        style={styles.text}>
-        ^
+        style={[styles.text, {backgroundColor: value ? 'blue' : 'transparent'}]}>
+        ON
       </Text>
     </VrButton>
 
@@ -26,19 +26,23 @@ const SelectionArrows = ({onPressUp, onPressDown}) => (
       onClickSound={{
         wav: asset('Sounds/Click.wav')
       }}
-      onClick={onPressDown}>
+      onClick={onPressOff}>
       <Text
-        style={styles.text}>
-        v
+        style={[styles.text, {backgroundColor: !value ? 'blue' : 'transparent'}]}>
+        OFF
       </Text>
     </VrButton>
 
   </View>
 )
 
-export default SelectionArrows
+export default Switch
 
 var styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
   text: {
     backgroundColor: 'transparent',
     fontSize: 0.2,

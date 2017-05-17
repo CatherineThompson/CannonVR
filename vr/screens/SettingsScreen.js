@@ -8,14 +8,36 @@ import {
   VrButton
 } from 'react-vr'
 import SettingsItemWithArrows from '../components/SettingsItemWithArrows'
+import SettingsItemSwitch from '../components/SettingsItemSwitch'
 
 export default class SettingsScreen extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      xCenter: 0,
+      yCenter: 0
+    }
+  }
+
+  _repositionSettingsView = (event) => {
+    if (this.state.xCenter === 0) {
+      this.setState({
+        xCenter: -1 * event.nativeEvent.width / 2,
+        yCenter: event.nativeEvent.height / 2})
+    }
+  }
+
   render () {
     return (
       <View>
         <Pano source={asset('Panos/simple_surface.jpg')}/>
 
-        <View style={styles.containerSettings}>
+        <View
+          billboarding='on'
+          onLayout={this._repositionSettingsView}
+          style={[styles.containerSettings, { transform: [
+            {translate: [this.state.xCenter, this.state.yCenter, -5]}
+          ]}]}>
           <View style={{flex: 1}}>
 
             <Text
@@ -51,6 +73,24 @@ export default class SettingsScreen extends React.Component {
               onPressUp={() => this.props.onPressVisualSettings('distanceMarkers', 'up')}
               onPressDown={() => this.props.onPressVisualSettings('distanceMarkers', 'down')} />
 
+            <SettingsItemSwitch
+              title='show outline'
+              value={this.props.state.settingsVisual.showOutline}
+              onPressOn={() => this.props.onPressVisualSettings('showOutline', 'on')}
+              onPressOff={() => this.props.onPressVisualSettings('showOutline', 'off')} />
+
+            <SettingsItemSwitch
+              title='show background'
+              value={this.props.state.settingsVisual.showBackground}
+              onPressOn={() => this.props.onPressVisualSettings('showBackground', 'on')}
+              onPressOff={() => this.props.onPressVisualSettings('showBackground', 'off')} />
+
+            <SettingsItemSwitch
+              title='slow motion'
+              value={this.props.state.settingsVisual.slowMo}
+              onPressOn={() => this.props.onPressVisualSettings('slowMo', 'on')}
+              onPressOff={() => this.props.onPressVisualSettings('slowMo', 'off')} />
+
           </View>
 
           <VrButton
@@ -69,10 +109,7 @@ export default class SettingsScreen extends React.Component {
 
 var styles = StyleSheet.create({
   containerSettings: {
-    backgroundColor: '#1A0DAB',
-    transform: [
-      {translate: [0, 0, -3]}
-    ]
+    backgroundColor: '#1A0DAB'
   },
   text: {
     backgroundColor: 'transparent',

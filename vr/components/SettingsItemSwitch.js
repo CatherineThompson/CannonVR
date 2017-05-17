@@ -4,29 +4,23 @@ import {
   Text,
   StyleSheet
 } from 'react-vr'
-import SelectionArrows from './SelectionArrows'
+import Switch from './Switch'
 
-const SettingsItemWithArrows = ({title, value, units, onPressUp, onPressDown}) => (
+const SettingsItemSwitch = ({title, value, onPressOn, onPressOff}) => (
   <View style={styles.containerItem}>
     <Text
       style={styles.text}>
       { title }
     </Text>
 
-    <View style={{flexDirection: 'row'}}>
-      <Text
-        style={styles.text} >
-        {value} {units}
-      </Text>
-
-      <SelectionArrows
-        onPressUp={onPressUp}
-        onPressDown={onPressDown} />
-    </View>
+    <Switch
+      value={value}
+      onPressOn={onPressOn}
+      onPressOff={onPressOff} />
   </View>
 )
 
-export default SettingsItemWithArrows
+export default SettingsItemSwitch
 
 var styles = StyleSheet.create({
   containerItem: {
